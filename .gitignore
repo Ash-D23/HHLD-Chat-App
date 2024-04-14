@@ -2,3 +2,4 @@ backend/node_modules
 
 frontend/hhld-chat-fe/node_modules
 auth-backend/node_modules
+auth-backend/.env
