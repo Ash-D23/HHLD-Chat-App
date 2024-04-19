@@ -61,11 +61,11 @@ const Auth = () => {
 
 
 return (
-    <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0  dark:border-gray-700">
+    <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 bg-sky-100">
+        <div className="w-full bg-sky-200 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0  dark:border-sky-700">
             <div>
                 <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-                    <h2 className="text-center text-indigo-600 font-bold text-2xl">HHLD Chat App</h2>
+                    <h2 className="text-center text-sky-600 font-bold text-2xl">HHLD Chat App</h2>
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                         <form className="space-y-6" >
                             <div>
@@ -79,7 +79,7 @@ return (
                                     required
                                     className="block w-full rounded-md border-0
                                     p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
-                                    placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                                    placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-400
                                     sm:text-sm sm:leading-6"/>
                                 </div>
                             </div>
@@ -96,19 +96,19 @@ return (
                                     required
                                     className="block w-full rounded-md border-0
                                     p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300
-                                    placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                                    placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-400
                                     sm:text-sm sm:leading-6"/>
                                 </div>
                             </div>
                             <div className="flex">
                                 <button type="submit" onClick={signUpFunc} className="flex
-                                m-2 w-1/2 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold
-                                leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline
+                                m-2 w-1/2 justify-center rounded-md bg-sky-500 px-3 py-1.5 text-sm font-semibold
+                                leading-6 text-white shadow-sm hover:bg-sky-600 focus-visible:outline
                                 focus-visible:outline-2 focus-visible:outline-offset-2
                                 focus-visible:outline-indigo-600">Sign Up</button>
                                 <button type="submit" onClick={loginFunc} className="flex
-                                m-2 w-1/2 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold
-                                leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline
+                                m-2 w-1/2 justify-center rounded-md bg-sky-600 px-3 py-1.5 text-sm font-semibold
+                                leading-6 text-white shadow-sm hover:bg-sky-700 focus-visible:outline
                                 focus-visible:outline-2 focus-visible:outline-offset-2
                                 focus-visible:outline-indigo-600">Login</button>
 
