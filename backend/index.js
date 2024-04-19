@@ -18,10 +18,17 @@ const io = new Server(server, {
  
  io.on('connection', (socket) => {
     console.log('Client connected');
+    const username = socket.handshake.query.username;
+    console.log('Username:', username);
+    
     socket.on('chat msg', (msg) => {
-        console.log('Received msg ' + msg);
-        socket.broadcast.emit('chat msg', msg);
-    });
+      console.log(msg.sender);
+      console.log(msg.receiver);
+      console.log(msg.textMsg);
+
+      socket.broadcast.emit('chat msg', msg)
+  });
+
  });
  
 

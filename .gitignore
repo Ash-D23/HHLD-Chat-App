@@ -1,5 +1,5 @@
 backend/node_modules
-
+backend/.env
 frontend/hhld-chat-fe/node_modules
 auth-backend/node_modules
 auth-backend/.env

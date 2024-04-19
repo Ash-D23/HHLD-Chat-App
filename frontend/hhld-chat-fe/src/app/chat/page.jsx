@@ -10,12 +10,16 @@ const Chat = () => {
 
     useEffect(() => {
         // Establish WebSocket connection
-        const newSocket = io('http://localhost:8080');
+        const newSocket = io('http://localhost:8080', {
+            query: {
+                username: "Ashutosh"
+            }
+        });
         setSocket(newSocket);
         // Listen for incoming msgs
         newSocket.on('chat msg', (msgrecv) => {
-            console.log('received msg on client ' + msgrecv);
-            setMsgs(prev => [...prev, {msg: msgrecv, currentUserMsg: false}])
+            console.log('received msg on client ' + JSON.stringify(msgrecv));
+            setMsgs(prev => [...prev, {msg: msgrecv.textMsg, sentByCurrUser: false}])
         })
         // Clean up function
         return () => newSocket.close();
@@ -23,9 +27,15 @@ const Chat = () => {
 
     const sendMsg = (e) => {
         e.preventDefault();
+        const msgToBeSent = {
+            textMsg: msg,
+            sender: "ashutosh",
+            receiver: "hhld"
+        };
+
         if(socket) {
-            socket.emit('chat msg', msg);
-            setMsgs([...msgs, { msg: msg, currentUserMsg: true }]);
+            socket.emit('chat msg', msgToBeSent);
+            setMsgs([...msgs, { msg: msg, sentByCurrUser: true }]);
             setMsg('');
         }
     }
@@ -34,8 +44,10 @@ const Chat = () => {
         <div className='h-screen flex flex-col'>
             <div className='msgs-container h-4/5 overflow-y-scroll  p-6 pt-2 pb-0'>
                 {msgs.map((msg, index) => (
-                    <div key={index} className={ `msg text-right flex ${msg.currentUserMsg ? "justify-end" : ""}` }>
-                        <p className='rounded-md border-0 p-2.5 m-2 bg-blue-700  text-white'>{msg?.msg}</p>
+                    <div key={index} className={ `m-3 p-1 ${msg.sentByCurrUser ? "text-right" : "text-left"}` }>
+                        <span className={`p-2 rounded-md ${msg.sentByCurrUser ? 'bg-blue-200' : 'bg-green-200'}`}>
+                            {msg.msg}
+                         </span>
                     </div>
                 ))}
             </div>
