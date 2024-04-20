@@ -21,3 +21,7 @@
     background: #555; 
   }
 
+  .btn-test-width{
+    width: Calc(100% - 1rem)
+  }
+

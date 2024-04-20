@@ -11,7 +11,6 @@ const signup = async (req, res) => {
             res.status(201).json({message: 'Username already exists'});
         } else {
             const user = new User({username: username, password: hashedPassword});
-            console.log(user);
             await user.save();
             generateJWTTokenAndSetCookie(user._id, res);
             res.status(201).json({message: 'User signed up successfully'});

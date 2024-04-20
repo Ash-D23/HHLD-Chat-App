@@ -59,15 +59,37 @@ const Auth = () => {
         }
     }
 
+    const loginWithTestFunc = async (event) => {
+        event.preventDefault();
+        try {
+            const res = await axios.post('http://localhost:5000/auth/login', {
+                username: "test",
+                password: "test1234"
+            },
+            {
+                withCredentials: true
+            })
+
+            console.log(res)
+            router.push('/chat')
+
+        } catch (error) {
+            console.log("Error in Login function : ", error.message);
+        }finally{
+            setUsername('')
+            setPassword('')
+        }
+    }
+
 
 return (
     <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 bg-sky-100">
         <div className="w-full bg-sky-200 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0  dark:border-sky-700">
             <div>
                 <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-                    <h2 className="text-center text-sky-600 font-bold text-2xl">HHLD Chat App</h2>
+                    <h2 className="text-center text-sky-700 font-bold text-2xl">HHLD Chat App</h2>
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                        <form className="space-y-6" >
+                        <form className="space-y-5" >
                             <div>
                                 <label className="block text-sm font-medium leading-6 text-gray-900">Username</label>
                                 <div className="mt-2">
@@ -100,18 +122,27 @@ return (
                                     sm:text-sm sm:leading-6"/>
                                 </div>
                             </div>
+                            <div>
                             <div className="flex">
                                 <button type="submit" onClick={signUpFunc} className="flex
                                 m-2 w-1/2 justify-center rounded-md bg-sky-500 px-3 py-1.5 text-sm font-semibold
                                 leading-6 text-white shadow-sm hover:bg-sky-600 focus-visible:outline
                                 focus-visible:outline-2 focus-visible:outline-offset-2
-                                focus-visible:outline-indigo-600">Sign Up</button>
+                                focus-visible:outline-blue-600">Sign Up</button>
                                 <button type="submit" onClick={loginFunc} className="flex
                                 m-2 w-1/2 justify-center rounded-md bg-sky-600 px-3 py-1.5 text-sm font-semibold
                                 leading-6 text-white shadow-sm hover:bg-sky-700 focus-visible:outline
                                 focus-visible:outline-2 focus-visible:outline-offset-2
-                                focus-visible:outline-indigo-600">Login</button>
+                                focus-visible:outline-blue-600">Login</button>
 
+                            </div>
+                            <div className="mt-1.5 w-full">
+                                <button type="submit" onClick={loginWithTestFunc} className="flex btn-test-width justify-center
+                                    m-2 w-full rounded-md bg-sky-700 px-3 py-1.5 text-sm font-semibold
+                                    leading-6 text-white shadow-sm hover:bg-sky-800 focus-visible:outline
+                                    focus-visible:outline-2 focus-visible:outline-offset-2
+                                    focus-visible:outline-indigo-600">Login with test Credentials</button>
+                            </div>
                             </div>
                         </form>
                     </div>
