@@ -65,8 +65,8 @@ const Chat = () => {
     }
 
     return (
-        <div className='h-screen flex divide-x-4'>
-            <div className='w-1/4 overflow-y-scroll'>
+        <div className='h-screen flex'>
+            <div className='w-1/4'>
                 <ChatUsers />
             </div>
             <div className='h-screen w-4/5 flex flex-col'>
@@ -78,7 +78,7 @@ const Chat = () => {
                                 <div className="relative w-10 h-10 overflow-hidden bg-gray-200 rounded-full">
                                     <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                                 </div>
-                                <div className={`flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 ${msg.sender === authName ? "bg-blue-200" : "bg-green-200"} rounded-e-xl rounded-es-xl`}>
+                                <div className={`flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 ${msg.sender === authName ? "bg-green-200" : "bg-blue-200"} rounded-e-xl rounded-es-xl`}>
                                     <div className="flex items-center space-x-2 rtl:space-x-reverse">
                                         <span className="text-sm font-semibold text-gray-900">{msg.sender}</span>
                                         <span className="text-sm font-normal text-gray-500 dark:text-blacky-400">11:46</span>

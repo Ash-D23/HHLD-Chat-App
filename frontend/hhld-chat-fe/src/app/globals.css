@@ -30,3 +30,7 @@
     background-size: cover;
   }
 
+  .h-users-list{
+    height: calc(100vh - 7rem);
+  }
+

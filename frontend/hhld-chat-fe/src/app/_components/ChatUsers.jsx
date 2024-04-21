@@ -4,12 +4,15 @@ import { useChatReceiverStore } from '../zustand/useChatReceiverStore';
 import axios from 'axios';
 import { useAuthStore } from '../zustand/useAuthStore';
 import { useChatMsgsStore } from '../zustand/useChatMsgsStore';
+import { useRouter } from 'next/navigation';
+
 
 const ChatUsers = () => {
   const { users } = useUsersStore();
   const { authName } = useAuthStore()
   const { chatReceiver, updateChatReceiver } = useChatReceiverStore();
   const { updateChatMsgs} = useChatMsgsStore();
+  const router = useRouter();
 
   const setChatReceiver = (user) => {
     updateChatReceiver(user.username);
@@ -38,30 +41,57 @@ const ChatUsers = () => {
         getMsgs();
     }
   }, [chatReceiver])
+
+  const Logout = () => {
+    router.push('/logout')
+  }
  
   return (
-    <div className='bg-white h-screen'>
-        <ul className="w-full text-gray-900 ">
-        <div className='w-full bg-sky-600 px-4 py-2 text-lg border-b border-gray-200 text-white font-bold text-center'>
+
+    <div className="h-screen">
+        <div className='w-full h-12 bg-sky-600 px-4 py-2 text-lg border-b border-gray-200 text-white font-bold text-center'>
             My Chat App
         </div>
-        {users.map((user, index) => (
-            <div  
-             key={index}
-             onClick={() => setChatReceiver(user)}
-             className={`${chatReceiver === user.username ? 'bg-sky-200' : 'bg-white'} w-full flex px-4 py-2 border-b border-blue-100 text-black text-center`}>
-                <div class="flex items-center gap-4 ml-2 p-2">
+        <div className='bg-white h-users-list overflow-y-scroll'>
+            <ul className="w-full text-gray-900 ">
+            
+            {users.map((user, index) => (
+                <div  
+                key={index}
+                onClick={() => setChatReceiver(user)}
+                className={`${chatReceiver === user.username ? 'bg-sky-200' : 'bg-white'} w-full flex px-4 py-2 border-b border-blue-100 text-black text-center`}>
+                    <div class="flex items-center gap-4 ml-2 p-2">
+                        <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full">
+                            <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                        </div>
+                        <div className="font-medium dark:text-white text-left">
+                            <div className='text-black'>{user.username}</div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">Last seen 2h ago</div>
+                        </div>
+                    </div>
+                </div>
+            ))}
+            </ul>
+        </div>
+        <div className='w-full h-16 bg-green-500 flex items-center px-4 py-2 text-lg text-white font-bold text-center'>
+                <div className='w-16 ml-2'>
                     <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full">
                         <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                     </div>
-                    <div class="font-medium dark:text-white text-left">
-                        <div className='text-black'>{user.username}</div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">Last seen 2h ago</div>
+                </div>
+                <div className="w-3/5 font-medium text-left">
+                        <div className='text-white'>{authName}</div>
+                </div>
+                <div className='w-1/6'>
+                    <div className='flex justify-center '>
+                        <span className="cursor-pointer" onClick={Logout}>
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3"/>
+                            </svg>
+                        </span>
                     </div>
                 </div>
-            </div>
-        ))}
-        </ul>
+        </div>
     </div>
   )
 }
