@@ -1,14 +1,22 @@
 "use client"
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from 'react'
 import { useRouter } from 'next/navigation'
+import { useAuthStore } from "./zustand/useAuthStore"
 
 const Auth = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const { authName, updateAuthName } = useAuthStore()
 
     const router = useRouter();
+
+    useEffect(() => {
+        if(authName){
+            router.push('/chat')
+        }
+    }, [])
 
     const signUpFunc = async (event) => {
         event.preventDefault();
@@ -24,7 +32,7 @@ const Auth = () => {
             if(res.data.message === "Username already exists") {
                 console.log('Username already exists');
             } else{
-                console.log(res)
+                updateAuthName(username)
                 router.push('/chat')
             }
 
@@ -48,7 +56,7 @@ const Auth = () => {
                 withCredentials: true
             })
 
-            console.log(res)
+            updateAuthName(username)
             router.push('/chat')
 
         } catch (error) {
@@ -70,7 +78,7 @@ const Auth = () => {
                 withCredentials: true
             })
 
-            console.log(res)
+            updateAuthName("test")
             router.push('/chat')
 
         } catch (error) {
@@ -83,11 +91,11 @@ const Auth = () => {
 
 
 return (
-    <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 bg-sky-100">
+    <div className="auth-image flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 bg-sky-100">
         <div className="w-full bg-sky-200 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0  dark:border-sky-700">
             <div>
                 <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-                    <h2 className="text-center text-sky-700 font-bold text-2xl">HHLD Chat App</h2>
+                    <h2 className="text-center text-sky-700 font-bold text-2xl">My Chat App</h2>
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                         <form className="space-y-5" >
                             <div>

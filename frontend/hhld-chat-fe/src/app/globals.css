@@ -25,3 +25,8 @@
     width: Calc(100% - 1rem)
   }
 
+  .auth-image{
+    background: url("/drop.jpg") no-repeat;
+    background-size: cover;
+  }
+
