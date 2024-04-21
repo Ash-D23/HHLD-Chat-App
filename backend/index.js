@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import http from "http"
+import http from "http";
 import { Server } from "socket.io";
 import connectToMongoDB from './db/connectToMongoDB.js';
 import { addMsgToConversation } from "./controllers/msgs.controller.js";
