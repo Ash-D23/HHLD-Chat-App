@@ -1,5 +1,5 @@
 'use client'
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import io from "socket.io-client";
 import axios from "axios";
 import { useAuthStore } from '../zustand/useAuthStore';
@@ -18,6 +18,12 @@ const Chat = () => {
     const { chatReceiver } = useChatReceiverStore();
     const { chatMsgs, updateChatMsg, updateChatMsgswithReciever } = useChatMsgsStore();
 
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+      }
+
     const getUserData = async () => {
         const res = await axios.get('http://localhost:5000/users',
                 {
@@ -25,6 +31,10 @@ const Chat = () => {
                 })
         updateUsers(res.data);
     }
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [chatMsgs])
 
     useEffect(() => {
         getUserData();
@@ -42,6 +52,7 @@ const Chat = () => {
             // Listen for incoming msgs
             newSocket.on('chat msg', (msg) => {
                 updateChatMsgswithReciever(msg)
+
                 
             })
             // Clean up function
@@ -87,6 +98,7 @@ const Chat = () => {
                                 </div>
                             </div>
                         ))}
+                        <div ref={messagesEndRef} />
                     </div>
                     <div className='h-1/5 flex items-center justify-center'>
                         <form onSubmit={sendMsg} className='p-6 pt-2 w-full'>
