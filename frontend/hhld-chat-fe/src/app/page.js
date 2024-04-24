@@ -1,5 +1,5 @@
 
-import Auth from "./auth";
+import Auth from "./Auth";
 
 
 export default function Home() {

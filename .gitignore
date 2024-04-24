@@ -3,3 +3,5 @@ backend/.env
 frontend/hhld-chat-fe/node_modules
 auth-backend/node_modules
 auth-backend/.env
+frontend/hhld-chat-fe2
+/docker-commands.txt
