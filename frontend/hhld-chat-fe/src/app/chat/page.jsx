@@ -25,10 +25,10 @@ const Chat = () => {
       }
 
     const getUserData = async () => {
-        const res = await axios.get('http://localhost:5000/users',
-                {
-                    withCredentials: true
-                })
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BE_HOST}:5000/users`,
+        {
+            withCredentials: true
+        })
         updateUsers(res.data);
     }
 
@@ -43,7 +43,7 @@ const Chat = () => {
     useEffect(() => {
         // Establish WebSocket connection
         if(authName){
-            const newSocket = io('http://localhost:8080', {
+            const newSocket = io(`${process.env.NEXT_PUBLIC_BE_HOST}:8080`, {
                 query: {
                     username: authName
                 }
