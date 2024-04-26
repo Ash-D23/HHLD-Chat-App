@@ -52,9 +52,13 @@ const Chat = () => {
             // Listen for incoming msgs
             newSocket.on('chat msg', (msg) => {
                 updateChatMsgswithReciever(msg)
-
-                
             })
+
+            newSocket.on("user status", (data) => {
+                console.log(data)
+                // update the user's list
+            })
+
             // Clean up function
             return () => newSocket.close();
         }
