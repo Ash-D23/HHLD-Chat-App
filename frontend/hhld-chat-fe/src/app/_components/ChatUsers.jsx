@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useAuthStore } from '../zustand/useAuthStore';
 import { useChatMsgsStore } from '../zustand/useChatMsgsStore';
 import { useRouter } from 'next/navigation';
+import { dateDiff } from '../utils/util';
 
 
 const ChatUsers = () => {
@@ -17,6 +18,8 @@ const ChatUsers = () => {
   const setChatReceiver = (user) => {
     updateChatReceiver(user.username);
   }
+
+  console.log(users)
 
   useEffect(() => {
     const getMsgs = async () => {
@@ -66,7 +69,7 @@ const ChatUsers = () => {
                         </div>
                         <div className="font-medium dark:text-white text-left">
                             <div className='text-black'>{user.username}</div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">Last seen 2h ago</div>
+                            { user?.is_online ? <div className="text-sm text-gray-500 dark:text-gray-400">Online</div> : <div className="text-sm text-gray-500 dark:text-gray-400">{dateDiff(user?.last_seen, new Date())}</div>}
                         </div>
                     </div>
                 </div>

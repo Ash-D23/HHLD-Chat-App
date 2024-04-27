@@ -17,7 +17,7 @@ const server = http.createServer(app);
 
 app.use(cors({
   credentials: true,
-  origin: [`${process.env.BE_HOST}:3000`, `${process.env.BE_HOST}:3001`]
+  origin: "*"
 }));
 
 const userSocketMap = {};

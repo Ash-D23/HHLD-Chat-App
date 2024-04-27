@@ -14,7 +14,7 @@ const Chat = () => {
     const [socket, setSocket] = useState(null);
     // const [msgs, setMsgs] = useState([]);
     const { authName } = useAuthStore()
-    const { updateUsers } = useUsersStore()
+    const { updateUsers, UpdateUserStatus } = useUsersStore()
     const { chatReceiver } = useChatReceiverStore();
     const { chatMsgs, updateChatMsg, updateChatMsgswithReciever } = useChatMsgsStore();
 
@@ -29,6 +29,7 @@ const Chat = () => {
         {
             withCredentials: true
         })
+
         updateUsers(res.data);
     }
 
@@ -55,8 +56,8 @@ const Chat = () => {
             })
 
             newSocket.on("user status", (data) => {
-                console.log(data)
                 // update the user's list
+                UpdateUserStatus(data)
             })
 
             // Clean up function

@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema({
         type: String
     },
     is_online : {
-        type: String
+        type: Boolean
     }
 });
 

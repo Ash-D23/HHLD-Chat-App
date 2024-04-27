@@ -13,7 +13,7 @@ const app = express();
 
 app.use(cors({
     credentials: true,
-    origin: [`${process.env.BE_HOST}:3000`, `${process.env.BE_HOST}:3001`]
+    origin: [`${process.env.BE_HOST}:3000`, `${process.env.BE_HOST}:3001`, `${process.env.BE_HOST}:8080`, `${process.env.BE_HOST}:8082` ]
 }));
    
 app.use(cookieParser());
@@ -30,5 +30,5 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, (req, res) => {
     connectToMongoDB();
-    console.log(`Server is running at ${PORT}`);
+    console.log(`Server auth is running at ${PORT}`);
 })
