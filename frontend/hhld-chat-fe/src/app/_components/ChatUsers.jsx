@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useAuthStore } from '../zustand/useAuthStore';
 import { useChatMsgsStore } from '../zustand/useChatMsgsStore';
 import { useRouter } from 'next/navigation';
+import { dateDiff } from '../utils/util';
 
 
 const ChatUsers = () => {
@@ -45,6 +46,8 @@ const ChatUsers = () => {
   const Logout = () => {
     router.push('/logout')
   }
+
+  const now = new Date()
  
   return (
 
@@ -61,12 +64,17 @@ const ChatUsers = () => {
                 onClick={() => setChatReceiver(user)}
                 className={`${chatReceiver === user.username ? 'bg-sky-200' : 'bg-white'} w-full flex px-4 py-2 border-b border-blue-100 text-black text-center`}>
                     <div class="flex items-center gap-4 ml-2 p-2">
-                        <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full">
-                            <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                        <div class="relative ">
+                            <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full">
+                                { user?.image ?  <img class="w-10 h-10 rounded-full" src="drop.jpg" alt="profile image"></img>:
+                                  <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg> 
+                                  }
+                            </div>
+                            { user?.is_online ? <span class="top-0 start-7 absolute w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span> : null }
                         </div>
                         <div className="font-medium dark:text-white text-left">
                             <div className='text-black'>{user.username}</div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400">Last seen 2h ago</div>
+                            { user?.is_online ? <div className="text-sm text-gray-500 dark:text-gray-400">Online</div> : <div className="text-sm text-gray-500 dark:text-gray-400">{dateDiff(user?.last_seen, now)}</div>}
                         </div>
                     </div>
                 </div>
