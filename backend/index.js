@@ -34,17 +34,19 @@ const io = new Server(server, {
 
     console.log('connected - ' + username);
 
+    subscribe("user_status", (data) => {
+      const jsonData = JSON.parse(data)
+      if(jsonData.username !== username){
+        socket.emit('user status', jsonData)
+      }
+      
+    });
+
     // Update user status in db
-    const date = new Date()
-    updateUserStatus(username, date, true)
+    updateUserStatus(username, new Date(), true)
 
-    // broadcast all that this user is online now
-    socket.broadcast.emit('user status', {
-      username: username,
-      is_online: true,
-      last_seen: date
-    })
-
+    // broadcast all that this user is online 
+  
     userSocketMap[username] = socket
 
     const channelName = `chat_${username}`
@@ -78,15 +80,9 @@ const io = new Server(server, {
       console.log('disconnected - ' + username);
 
       // update user status in DB
-      const date = new Date()
-      updateUserStatus(username, date, false)
+      updateUserStatus(username, new Date(), false)
 
       // broadcast to all users that user is offline
-      socket.broadcast.emit('user status', {
-        username: username,
-        is_online: false,
-        last_seen: date
-      })
     });
 
  });

@@ -56,7 +56,8 @@ const Chat = () => {
             })
 
             newSocket.on("user status", (data) => {
-                // update the user's list
+                // update the user's 
+                console.log(data)
                 UpdateUserStatus(data)
             })
 
