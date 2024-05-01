@@ -8,6 +8,7 @@ import msgsRouter from "./routes/msgs.route.js";
 import { subscribe, publish } from "./redis/msgsPubSub.js";
 import cors from 'cors';
 import { updateUserStatus } from './api/User-requests.js';
+import groupsRouter from './routes/groups.route.js'
 
 dotenv.config();
 const port = process.env.PORT || 5000; 
@@ -19,6 +20,8 @@ app.use(cors({
   credentials: true,
   origin: "*"
 }));
+
+app.use(express.json());
 
 const userSocketMap = {};
 
@@ -88,6 +91,8 @@ const io = new Server(server, {
  });
 
 app.use('/msgs', msgsRouter);
+
+app.use('/groups', groupsRouter);
  
 app.get('/', (req, res) => {
   res.send('Congratulations HHLD Chat App');

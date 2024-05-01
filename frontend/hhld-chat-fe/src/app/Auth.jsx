@@ -55,7 +55,6 @@ const Auth = () => {
             {
                 withCredentials: true
             })
-
             updateAuthName(username)
             router.push('/chat')
 
@@ -77,7 +76,7 @@ const Auth = () => {
             {
                 withCredentials: true
             })
-
+            console.log(res)
             updateAuthName("test")
             router.push('/chat')
 

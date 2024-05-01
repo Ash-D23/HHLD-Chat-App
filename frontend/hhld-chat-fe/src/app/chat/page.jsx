@@ -7,6 +7,8 @@ import { useUsersStore } from '../zustand/useUsersStore';
 import ChatUsers from '../_components/ChatUsers';
 import { useChatReceiverStore } from '../zustand/useChatReceiverStore';
 import { useChatMsgsStore } from '../zustand/useChatMsgsStore';
+import { useChatSelection } from '../zustand/useChatSelection';
+import StartConversation from '../_components/StartConversation';
 
 const Chat = () => {
 
@@ -17,6 +19,7 @@ const Chat = () => {
     const { updateUsers, UpdateUserStatus } = useUsersStore()
     const { chatReceiver } = useChatReceiverStore();
     const { chatMsgs, updateChatMsg, updateChatMsgswithReciever } = useChatMsgsStore();
+    const { chatSelection, updateChatSelection } = useChatSelection();
 
     const messagesEndRef = useRef(null)
 
@@ -119,9 +122,7 @@ const Chat = () => {
                     </div>
                 </>
                 ) : (
-                    <div className='flex items-center justify-center p-10'>
-                        <img src="/chat.svg" />
-                    </div>
+                    <StartConversation selection={chatSelection} />
                 ) }
             </div>
         </div>

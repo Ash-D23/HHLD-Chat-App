@@ -18,7 +18,10 @@ const userSchema = mongoose.Schema({
     },
     is_online : {
         type: Boolean
-    }
+    },
+    groups : [{
+        type: String
+    }]
 });
 
 const userModel = mongoose.model('User', userSchema);

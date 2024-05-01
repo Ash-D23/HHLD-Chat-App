@@ -5,6 +5,7 @@ import connectToMongoDB from "./db/connectToMongoDB.js"
 import cors from "cors"
 import cookieParser from "cookie-parser";
 import usersRouter from "./routes/users.route.js"
+import groupRouter from "./routes/groups.route.js"
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -23,6 +24,8 @@ app.use(express.json());
 app.use('/auth', authRouter);
 
 app.use('/users', usersRouter);
+
+app.use('/groups', groupRouter)
 
 app.get('/', (req, res) => {
     res.send("Welcome to HHLD Chat App!");

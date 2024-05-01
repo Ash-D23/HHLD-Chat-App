@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const msgSchema = mongoose.Schema({
    text: {
        type: String,
@@ -10,17 +9,11 @@ const msgSchema = mongoose.Schema({
        type: String,
        required: true
    },
-   // not necessary to have receiver
-   receiver: {
-       type: String,
-       required: true
-   },
-   // createdAt: {
-   //     type: Date,
-   //     default: Date.now
-   // }
+   createdAt: {
+       type: Date,
+       default: Date.now
+   }
 });
-
 
 const conversationSchema = mongoose.Schema({
    users: [{
@@ -30,8 +23,6 @@ const conversationSchema = mongoose.Schema({
    msgs: [msgSchema]
 });
 
-
 const conversation = mongoose.model('Conversation', conversationSchema);
-
 
 export default conversation;

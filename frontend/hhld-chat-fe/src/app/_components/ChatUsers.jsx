@@ -6,10 +6,13 @@ import { useAuthStore } from '../zustand/useAuthStore';
 import { useChatMsgsStore } from '../zustand/useChatMsgsStore';
 import { useRouter } from 'next/navigation';
 import { dateDiff } from '../utils/util';
+import { useChatSelection } from '../zustand/useChatSelection';
+import UsersList from './UsersList';
+import GroupList from './GroupList';
 
 
 const ChatUsers = () => {
-  const [selection, setSelection] = useState('Chat')
+  const { chatSelection, updateChatSelection } = useChatSelection();
   const { users } = useUsersStore();
   const { authName } = useAuthStore()
   const { chatReceiver, updateChatReceiver } = useChatReceiverStore();
@@ -47,8 +50,6 @@ const ChatUsers = () => {
   const Logout = () => {
     router.push('/logout')
   }
-
-  const now = new Date()
  
   return (
 
@@ -65,38 +66,16 @@ const ChatUsers = () => {
                 </select>
             </div>
             <ul className="hidden font-medium text-center border-b-2 bg-gray-200 text-gray-500 shadow sm:flex ">
-                <li onClick={() => setSelection('Chat')} className="w-full focus-within:z-10 cursor-pointer	">
-                    <a className={`inline-block w-full p-3.5 cursor-pointer ${selection === 'Chat' ? 'bg-gray-200' : 'bg-white'} text-gray-900 border-r border-gray-200`} aria-current="page">Chat</a>
+                <li onClick={() => updateChatSelection('Chat')} className="w-full focus-within:z-10 cursor-pointer	">
+                    <a className={`inline-block w-full p-3.5 cursor-pointer ${chatSelection === 'Chat' ? 'bg-gray-200' : 'bg-white'} text-gray-900 border-r border-gray-200`} aria-current="page">Chat</a>
                 </li>
-                <li onClick={() => setSelection('Group')} className="w-full focus-within:z-10 cursor-pointer">
-                    <a className={`inline-block w-full p-3.5 cursor-pointer ${selection !== 'Chat' ? 'bg-gray-200' : 'bg-white'} text-gray-900 `}>Groups</a>
+                <li onClick={() => updateChatSelection('Group')} className="w-full focus-within:z-10 cursor-pointer">
+                    <a className={`inline-block w-full p-3.5 cursor-pointer ${chatSelection !== 'Chat' ? 'bg-gray-200' : 'bg-white'} text-gray-900 `}>Groups</a>
                 </li>
             </ul>
         <div className='bg-white h-users-list overflow-y-scroll'>
-            <ul className="w-full text-gray-900 ">
-            
-            {users.map((user, index) => (
-                <div  
-                key={index}
-                onClick={() => setChatReceiver(user)}
-                className={`${chatReceiver === user.username ? 'bg-sky-200' : 'bg-white'} w-full cursor-pointer flex px-4 py-2 border-b border-blue-100 text-black text-center`}>
-                    <div className="flex items-center gap-4 ml-2 p-2">
-                        <div className="relative ">
-                            <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full">
-                                { user?.image ?  <img class="w-10 h-10 rounded-full" src="drop.jpg" alt="profile image"></img>:
-                                  <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg> 
-                                  }
-                            </div>
-                            { user?.is_online ? <span className="top-0 start-7 absolute w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span> : null }
-                        </div>
-                        <div className="font-medium dark:text-white text-left">
-                            <div className='text-black'>{user.username}</div>
-                            { user?.is_online ? <div className="text-sm text-gray-500 dark:text-gray-400">Online</div> : <div className="text-sm text-gray-500 dark:text-gray-400">{dateDiff(user?.last_seen, now)}</div>}
-                        </div>
-                    </div>
-                </div>
-            ))}
-            </ul>
+            { chatSelection === 'Chat' ? <UsersList users={users} chatReceiver={chatReceiver} setChatReceiver={setChatReceiver} /> : 
+            <GroupList chatReceiver={chatReceiver} setChatReceiver={setChatReceiver} /> }
         </div>
         <div className='w-full h-16 bg-green-500 flex items-center px-4 py-2 text-lg text-white font-bold text-center'>
                 <div className='w-16 ml-2'>

@@ -23,4 +23,31 @@ export const updateUserStatus = async (req, res) => {
     }
 }
 
+export const updateUsersGroup = async (req, res) => {
+    try{
+        const { groupName, userlist } = req.body
+        console.log(groupName)
+        for(let userName of userlist){
+            console.log(userName)
+            let user = await User.findOne({ username: userName });
+
+            // If conversation doesn't exist, create a new one
+            if (!user) {
+                throw new Error('user not found')
+            }
+            // Add msg to the conversation
+            if(user.groups){
+                user.groups.push(groupName)
+            }else{
+                user.groups = [groupName]
+            }
+            await user.save();
+        }
+        res.status(201).json({message: 'Groups added to Userlist'});
+
+    }catch(err){
+        console.log(err.message)
+    }
+}
+
 export default getUsers;
