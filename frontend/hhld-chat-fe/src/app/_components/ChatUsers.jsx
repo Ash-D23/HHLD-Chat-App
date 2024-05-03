@@ -19,8 +19,8 @@ const ChatUsers = () => {
   const { updateChatMsgs} = useChatMsgsStore();
   const router = useRouter();
 
-  const setChatReceiver = (user) => {
-    updateChatReceiver(user.username);
+  const setChatReceiver = (data) => {
+    updateChatReceiver(data);
   }
 
   useEffect(() => {

@@ -10,8 +10,8 @@ const UsersList = ({ users, chatReceiver, setChatReceiver }) => {
             {users.map((user, index) => (
                 <div  
                 key={index}
-                onClick={() => setChatReceiver(user)}
-                className={`${chatReceiver === user.username ? 'bg-sky-200' : 'bg-white'} w-full cursor-pointer flex px-4 py-2 border-b border-blue-100 text-black text-center`}>
+                onClick={() => setChatReceiver(user?.username)}
+                className={`${chatReceiver === user?.username ? 'bg-sky-200' : 'bg-white'} w-full cursor-pointer flex px-4 py-2 border-b border-blue-100 text-black text-center`}>
                     <div className="flex items-center gap-4 ml-2 p-2">
                         <div className="relative ">
                             <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full">

@@ -9,12 +9,13 @@ import { useChatReceiverStore } from '../zustand/useChatReceiverStore';
 import { useChatMsgsStore } from '../zustand/useChatMsgsStore';
 import { useChatSelection } from '../zustand/useChatSelection';
 import StartConversation from '../_components/StartConversation';
+import AddGroupModal from '../_components/AddGroupModal';
 
 const Chat = () => {
 
     const [msg, setMsg] = useState('');
     const [socket, setSocket] = useState(null);
-    // const [msgs, setMsgs] = useState([]);
+    const [showModal, setShowModal] = useState(false)
     const { authName } = useAuthStore()
     const { updateUsers, UpdateUserStatus } = useUsersStore()
     const { chatReceiver } = useChatReceiverStore();
@@ -122,9 +123,12 @@ const Chat = () => {
                     </div>
                 </>
                 ) : (
-                    <StartConversation selection={chatSelection} />
+                    <StartConversation selection={chatSelection} setShowModal={() => setShowModal(true)}/>
                 ) }
             </div>
+            { showModal ? (
+                <AddGroupModal closeModal={()=> setShowModal(false)}/>
+            ) : null }
         </div>
     )
 }
