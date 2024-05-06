@@ -1,8 +1,10 @@
 import express from "express"
-import getMsgsForConversation from "../controllers/msgs.controller.js";
+import getMsgsForConversation, { getGroupMsgsForConversation } from "../controllers/msgs.controller.js";
 
 const router = express.Router();
 
 router.get('/', getMsgsForConversation);
+
+router.post('/group', getGroupMsgsForConversation)
 
 export default router;

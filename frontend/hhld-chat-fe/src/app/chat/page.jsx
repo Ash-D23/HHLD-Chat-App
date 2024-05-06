@@ -63,9 +63,12 @@ const Chat = () => {
                 updateChatMsgswithReciever(msg)
             })
 
+            newSocket.on('group msg', (msg) => {
+                updateChatMsgswithReciever(msg)
+            })
+
             newSocket.on("user status", (data) => {
                 // update the user's 
-                console.log(data)
                 UpdateUserStatus(data)
             })
 
@@ -90,6 +93,7 @@ const Chat = () => {
                 setMsg('');
             }
         }else{
+            
             const groupDetails = groups.find(group => group.groupName === chatReceiver)
             const msgToBeSent = {
                 text: msg,
@@ -97,7 +101,6 @@ const Chat = () => {
                 groupName: chatReceiver,
                 members: groupDetails.members
             };
-
             if(socket) {
                 socket.emit('group msg', msgToBeSent);
                 updateChatMsg(msgToBeSent)

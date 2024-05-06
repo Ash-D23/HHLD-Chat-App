@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useChatSelection } from '../zustand/useChatSelection';
 import UsersList from './UsersList';
 import GroupList from './GroupList';
-
+import { useGroups } from '../zustand/useGroups';
 
 const ChatUsers = () => {
   const { chatSelection, updateChatSelection } = useChatSelection();
@@ -23,7 +23,7 @@ const ChatUsers = () => {
   }
 
   useEffect(() => {
-    const getMsgs = async () => {
+    const getMsgs = async (authName, chatReceiver) => {
         const res = await axios.get(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/msgs`,
             {
                 params: {
@@ -41,8 +41,26 @@ const ChatUsers = () => {
             updateChatMsgs([]);
         }
     }
-    if(chatReceiver) {
-        getMsgs();
+
+    const getGroupMsgs = async (chatReceiver) => {
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/msgs/group`,
+        {
+            "groupName": chatReceiver
+        })
+
+        if (res.data.length !== 0) {
+            updateChatMsgs(res.data);
+        } else {
+            updateChatMsgs([]);
+        }
+    }
+
+    if(chatReceiver && chatSelection === 'Chat') {
+        getMsgs(authName, chatReceiver);
+    }
+
+    if(chatReceiver && chatSelection === 'Group') {
+        getGroupMsgs(chatReceiver);
     }
   }, [chatReceiver])
 

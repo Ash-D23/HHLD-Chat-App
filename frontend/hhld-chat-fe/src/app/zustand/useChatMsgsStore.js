@@ -6,7 +6,9 @@ export const useChatMsgsStore = create( (set) => ({
    updateChatMsg: (msg) => set((state) => ({ chatMsgs: [...state.chatMsgs, msg] })),
    updateChatMsgs: (chatMsgs) => set({chatMsgs}),
    updateChatMsgswithReciever: (msg) => {
-      if(msg.sender === useChatReceiverStore.getState().chatReceiver){
+      if(msg.sender === useChatReceiverStore.getState().chatReceiver && !msg.groupName){
+         set((state) => ({ chatMsgs: [...state.chatMsgs, msg] }))
+      }else if(msg.groupName === useChatReceiverStore.getState().chatReceiver){
          set((state) => ({ chatMsgs: [...state.chatMsgs, msg] }))
       }
    }

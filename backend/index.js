@@ -88,7 +88,8 @@ const io = new Server(server, {
         {
           text: msg.text,
           sender: msg.sender
-        }
+        },
+        true, msg.groupName
       )
 
       // Remove sender from receiver
@@ -102,7 +103,8 @@ const io = new Server(server, {
         if(recieverSocket){
           recieverSocket.emit('group msg', {
             text: msg.text,
-            sender: msg.sender
+            sender: msg.sender,
+            groupName: msg.groupName
           })
         }else{
           //Pub Sub group_recieverName_groupName

@@ -20,7 +20,10 @@ const conversationSchema = mongoose.Schema({
        type: String,
        required: true
    }],
-   msgs: [msgSchema]
+   msgs: [msgSchema],
+   groupName: {
+    type: String
+   }
 });
 
 const conversation = mongoose.model('Conversation', conversationSchema);

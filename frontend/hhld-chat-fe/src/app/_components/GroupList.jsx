@@ -18,7 +18,6 @@ const GroupList = ({ chatReceiver, setChatReceiver }) => {
   useEffect(()=>{
     getGroupData()
   }, [])
-  console.log(groups)
 
   return (
     <ul className="w-full text-gray-900 ">

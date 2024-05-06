@@ -26,7 +26,7 @@ export const updateUserStatus = async (req, res) => {
 export const updateUsersGroup = async (req, res) => {
     try{
         const { groupName, members } = req.body
-        console.log(groupName)
+
         for(let userName of members){
             console.log(userName)
             let user = await User.findOne({ username: userName });
@@ -35,6 +35,7 @@ export const updateUsersGroup = async (req, res) => {
             if (!user) {
                 throw new Error('user not found')
             }
+
             // Add msg to the conversation
             if(user.groups){
                 user.groups.push({ groupName, members})
