@@ -15,7 +15,7 @@ export const addGroup = async (req, res) => {
             //Add in User's schema
             const result = await axios.post(`${process.env.BE_HOST}:5000/users/updateUsersGroup`, {
                 groupName: groupName,
-                userlist: members
+                members: members
             })
 
             res.status(201).json({message: 'Group Created Succesfully'});

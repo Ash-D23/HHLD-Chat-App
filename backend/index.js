@@ -36,7 +36,8 @@ const io = new Server(server, {
     const username = socket.handshake.query.username;
 
     console.log('connected - ' + username);
-
+    // Note - Improvement have a topic - user_status_friendName and who all have this friend name will recieve that friend's status when online
+    // In our app we don't have a friend's list all users are available in Chat list to chat with hence the below solution
     subscribe("user_status", (data) => {
       const jsonData = JSON.parse(data)
       if(jsonData.username !== username){
@@ -47,7 +48,6 @@ const io = new Server(server, {
 
     // Update user status in db
     updateUserStatus(username, new Date(), true)
-
     // broadcast all that this user is online 
   
     userSocketMap[username] = socket
@@ -77,6 +77,38 @@ const io = new Server(server, {
       )
       // socket.broadcast.emit('chat msg', msg)
     });
+
+    socket.on('group msg', (msg) => {
+      // Find members from groupName
+      const members = msg.members
+
+      // Add to Conversations DB
+
+      addMsgToConversation(members,
+        {
+          text: msg.text,
+          sender: msg.sender
+        }
+      )
+
+      // Remove sender from receiver
+
+      const receivers = members.filter(receiver => receiver !== msg.sender)
+
+      // Send to all recievers the message
+
+      for(let receiver of receivers){
+        const recieverSocket = userSocketMap[receiver]
+        if(recieverSocket){
+          recieverSocket.emit('group msg', {
+            text: msg.text,
+            sender: msg.sender
+          })
+        }else{
+          //Pub Sub group_recieverName_groupName
+        }
+      }
+    })
 
     socket.on('disconnect', () => {
 

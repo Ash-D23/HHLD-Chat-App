@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useAuthStore } from '../zustand/useAuthStore';
 import { useChatMsgsStore } from '../zustand/useChatMsgsStore';
 import { useRouter } from 'next/navigation';
-import { dateDiff } from '../utils/util';
 import { useChatSelection } from '../zustand/useChatSelection';
 import UsersList from './UsersList';
 import GroupList from './GroupList';
@@ -50,6 +49,11 @@ const ChatUsers = () => {
   const Logout = () => {
     router.push('/logout')
   }
+
+  const updateSelection = (selection) => {
+    updateChatSelection(selection)
+    setChatReceiver(null)
+  }
  
   return (
 
@@ -66,10 +70,10 @@ const ChatUsers = () => {
                 </select>
             </div>
             <ul className="hidden font-medium text-center border-b-2 bg-gray-200 text-gray-500 shadow sm:flex ">
-                <li onClick={() => updateChatSelection('Chat')} className="w-full focus-within:z-10 cursor-pointer	">
+                <li onClick={() => updateSelection('Chat')} className="w-full focus-within:z-10 cursor-pointer	">
                     <a className={`inline-block w-full p-3.5 cursor-pointer ${chatSelection === 'Chat' ? 'bg-gray-200' : 'bg-white'} text-gray-900 border-r border-gray-200`} aria-current="page">Chat</a>
                 </li>
-                <li onClick={() => updateChatSelection('Group')} className="w-full focus-within:z-10 cursor-pointer">
+                <li onClick={() => updateSelection('Group')} className="w-full focus-within:z-10 cursor-pointer">
                     <a className={`inline-block w-full p-3.5 cursor-pointer ${chatSelection !== 'Chat' ? 'bg-gray-200' : 'bg-white'} text-gray-900 `}>Groups</a>
                 </li>
             </ul>

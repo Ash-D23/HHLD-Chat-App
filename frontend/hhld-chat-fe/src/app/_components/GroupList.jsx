@@ -1,9 +1,10 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useGroups } from '../zustand/useGroups'
 
 const GroupList = ({ chatReceiver, setChatReceiver }) => {
 
-    const [groups, setGroups] = useState([])
+    const { groups, updateGroups } = useGroups()
 
     const getGroupData = async () => {
         const res = await axios.get(`${process.env.NEXT_PUBLIC_BE_HOST}:5000/groups`,
@@ -11,21 +12,21 @@ const GroupList = ({ chatReceiver, setChatReceiver }) => {
             withCredentials: true
         })
         
-        setGroups(res.data);
+        updateGroups(res.data);
     }
 
   useEffect(()=>{
     getGroupData()
   }, [])
-
+  console.log(groups)
 
   return (
     <ul className="w-full text-gray-900 ">
             {groups?.map((group, index) => (
                 <div  
                 key={index}
-                onClick={() => setChatReceiver(group)}
-                className={`${chatReceiver === group ? 'bg-sky-200' : 'bg-white'} w-full cursor-pointer flex px-4 py-2 border-b border-blue-100 text-black text-center`}>
+                onClick={() => setChatReceiver(group.groupName)}
+                className={`${chatReceiver === group.groupName ? 'bg-sky-200' : 'bg-white'} w-full cursor-pointer flex px-4 py-2 border-b border-blue-100 text-black text-center`}>
                     <div className="flex items-center gap-4 ml-2 p-2">
                         <div className="relative ">
                             <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full">
@@ -33,7 +34,7 @@ const GroupList = ({ chatReceiver, setChatReceiver }) => {
                             </div>
                         </div>
                         <div className="font-medium dark:text-white text-left">
-                            <div className='text-black'>{group}</div>
+                            <div className='text-black'>{group.groupName}</div>
                         </div>
                     </div>
                 </div>

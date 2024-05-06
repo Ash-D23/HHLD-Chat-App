@@ -25,9 +25,9 @@ export const updateUserStatus = async (req, res) => {
 
 export const updateUsersGroup = async (req, res) => {
     try{
-        const { groupName, userlist } = req.body
+        const { groupName, members } = req.body
         console.log(groupName)
-        for(let userName of userlist){
+        for(let userName of members){
             console.log(userName)
             let user = await User.findOne({ username: userName });
 
@@ -37,9 +37,9 @@ export const updateUsersGroup = async (req, res) => {
             }
             // Add msg to the conversation
             if(user.groups){
-                user.groups.push(groupName)
+                user.groups.push({ groupName, members})
             }else{
-                user.groups = [groupName]
+                user.groups = [{groupName, members}]
             }
             await user.save();
         }

@@ -2,6 +2,9 @@
 import React, { useState } from 'react'
 import { useUsersStore } from '../zustand/useUsersStore';
 import { useAuthStore } from '../zustand/useAuthStore';
+import axios from 'axios';
+import { useGroups } from '../zustand/useGroups';
+import { toast } from 'react-toastify';
 
 const AddGroupModal = ({ closeModal }) => {
 
@@ -10,6 +13,7 @@ const AddGroupModal = ({ closeModal }) => {
    const [selectedUsers, setSelectedUsers] = useState(new Set())
    const [search, setSearch] = useState('')
    const [groupName, setGroupName] = useState('')
+   const { addGroups } = useGroups() 
 
    const addSelectedUser = user => {
     setSelectedUsers(prev => new Set(prev.add(user)))
@@ -32,17 +36,44 @@ const AddGroupModal = ({ closeModal }) => {
    }
 
    const handleClose = (e) => {
-    e.stopPropagation();
     setSearch('')
     setGroupName('')
     setSelectedUsers(new Set())
     closeModal()
    }
 
-   const submitGroup = (e) => {
-    e.preventDefault()
+   const submitGroup = async (e) => {
+        e.preventDefault()
 
-    console.log(groupName, selectedUsers, authName)
+        try{
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/groups/add`, {
+                groupName: groupName,
+                Owner: authName,
+                members: [...selectedUsers, authName]
+            })
+    
+            console.log(res.data.message)
+
+            addGroups({groupName, members: [...selectedUsers, authName]})
+
+            toast.success(`Group: ${groupName} Created`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored"
+                });
+
+        }catch(err){
+            console.log(err.message)
+        }finally{
+            handleClose()
+        }
+
+        
    }
 
    const filteredUsers = users.filter(user => user.username.toLowerCase().includes(search.toLowerCase()))

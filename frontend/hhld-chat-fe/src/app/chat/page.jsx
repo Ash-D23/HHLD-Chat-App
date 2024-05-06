@@ -10,17 +10,21 @@ import { useChatMsgsStore } from '../zustand/useChatMsgsStore';
 import { useChatSelection } from '../zustand/useChatSelection';
 import StartConversation from '../_components/StartConversation';
 import AddGroupModal from '../_components/AddGroupModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useGroups } from '../zustand/useGroups';
 
 const Chat = () => {
 
     const [msg, setMsg] = useState('');
     const [socket, setSocket] = useState(null);
-    const [showModal, setShowModal] = useState(false)
-    const { authName } = useAuthStore()
-    const { updateUsers, UpdateUserStatus } = useUsersStore()
+    const [showModal, setShowModal] = useState(false);
+    const { authName } = useAuthStore();
+    const { updateUsers, UpdateUserStatus } = useUsersStore();
     const { chatReceiver } = useChatReceiverStore();
     const { chatMsgs, updateChatMsg, updateChatMsgswithReciever } = useChatMsgsStore();
-    const { chatSelection, updateChatSelection } = useChatSelection();
+    const { chatSelection } = useChatSelection();
+    const {groups} = useGroups()
 
     const messagesEndRef = useRef(null)
 
@@ -72,16 +76,33 @@ const Chat = () => {
 
     const sendMsg = (e) => {
         e.preventDefault();
-        const msgToBeSent = {
-            text: msg,
-            sender: authName,
-            receiver: chatReceiver
-        };
 
-        if(socket) {
-            socket.emit('chat msg', msgToBeSent);
-            updateChatMsg(msgToBeSent)
-            setMsg('');
+        if(chatSelection === 'Chat'){
+            const msgToBeSent = {
+                text: msg,
+                sender: authName,
+                receiver: chatReceiver
+            };
+
+            if(socket) {
+                socket.emit('chat msg', msgToBeSent);
+                updateChatMsg(msgToBeSent)
+                setMsg('');
+            }
+        }else{
+            const groupDetails = groups.find(group => group.groupName === chatReceiver)
+            const msgToBeSent = {
+                text: msg,
+                sender: authName,
+                groupName: chatReceiver,
+                members: groupDetails.members
+            };
+
+            if(socket) {
+                socket.emit('group msg', msgToBeSent);
+                updateChatMsg(msgToBeSent)
+                setMsg('');
+            }
         }
     }
 
@@ -110,14 +131,14 @@ const Chat = () => {
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
-                    <div className='h-1/5 flex items-center justify-center'>
+                    <div className='h-1/5 flex items-end justify-center'>
                         <form onSubmit={sendMsg} className='p-6 pt-2 w-full'>
                             <div className="relative">
                                 <input 
                                     value={msg}
                                     onChange={(e) => setMsg(e.target.value)}
-                                    type="search" id="search" className="block w-full p-4 ps-6 text-sm text-gray-900 border border-blue-300 rounded-lg bg-white-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Send Message" required />
-                                <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Send</button>
+                                    type="search" id="search" className="block w-full p-4 ps-6 text-sm text-gray-900 border-2 border-blue-400 rounded-lg bg-white-50 focus:outline-none focus:border-blue-500 " placeholder="Send Message" required />
+                                <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-green-700 hover:bg-green-800 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">Send</button>
                             </div>
                         </form>
                     </div>
@@ -129,6 +150,18 @@ const Chat = () => {
             { showModal ? (
                 <AddGroupModal closeModal={()=> setShowModal(false)}/>
             ) : null }
+            <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored" 
+            />
         </div>
     )
 }
