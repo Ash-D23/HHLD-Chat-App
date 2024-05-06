@@ -112,6 +112,23 @@ const io = new Server(server, {
       }
     })
 
+    socket.on('add group', (group) => {
+      // Find members from groupName
+      const members = group.members
+
+      // Remove sender from receiver
+      const receivers = members?.filter(receiver => receiver !== group.Owner)
+
+      for(let receiver of receivers){
+        const recieverSocket = userSocketMap[receiver]
+        if(recieverSocket){
+          recieverSocket.emit('add group', group)
+        }else{
+          //Pub Sub group_recieverName_groupName
+        }
+      }
+    })
+
     socket.on('disconnect', () => {
 
       console.log('disconnected - ' + username);

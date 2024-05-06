@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useGroups } from '../zustand/useGroups';
 import { toast } from 'react-toastify';
 
-const AddGroupModal = ({ closeModal }) => {
+const AddGroupModal = ({ closeModal, sendAddGroupNotification }) => {
 
    const { users } = useUsersStore();
    const { authName } = useAuthStore()
@@ -46,15 +46,16 @@ const AddGroupModal = ({ closeModal }) => {
         e.preventDefault()
 
         try{
+            const members = [...selectedUsers, authName]
             const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/groups/add`, {
                 groupName: groupName,
                 Owner: authName,
-                members: [...selectedUsers, authName]
+                members: members
             })
     
             console.log(res.data.message)
 
-            addGroups({groupName, members: [...selectedUsers, authName]})
+            addGroups({groupName, members, Owner: authName })
 
             toast.success(`Group: ${groupName} Created`, {
                 position: "top-right",
@@ -66,6 +67,8 @@ const AddGroupModal = ({ closeModal }) => {
                 progress: undefined,
                 theme: "colored"
                 });
+
+            sendAddGroupNotification(groupName, authName, members)
 
         }catch(err){
             console.log(err.message)

@@ -24,7 +24,7 @@ const Chat = () => {
     const { chatReceiver } = useChatReceiverStore();
     const { chatMsgs, updateChatMsg, updateChatMsgswithReciever } = useChatMsgsStore();
     const { chatSelection } = useChatSelection();
-    const {groups} = useGroups()
+    const {groups, addGroups} = useGroups()
 
     const messagesEndRef = useRef(null)
 
@@ -72,6 +72,20 @@ const Chat = () => {
                 UpdateUserStatus(data)
             })
 
+            newSocket.on("add group", (group) => {
+                addGroups(group)
+                toast.success(`${group.Owner} added you to ${group.groupName}`, {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
+            })
+
             // Clean up function
             return () => newSocket.close();
         }
@@ -106,6 +120,12 @@ const Chat = () => {
                 updateChatMsg(msgToBeSent)
                 setMsg('');
             }
+        }
+    }
+
+    const sendAddGroupNotification = (groupName, Owner, members) => {
+        if(socket) {
+            socket.emit('add group', {groupName, Owner, members});
         }
     }
 
@@ -151,7 +171,7 @@ const Chat = () => {
                 ) }
             </div>
             { showModal ? (
-                <AddGroupModal closeModal={()=> setShowModal(false)}/>
+                <AddGroupModal closeModal={()=> setShowModal(false)} sendAddGroupNotification={sendAddGroupNotification} />
             ) : null }
             <ToastContainer
                 position="top-right"
