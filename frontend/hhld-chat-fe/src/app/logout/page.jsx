@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation';
 
 const Logout = () => {
 
-const { updateAuthName } = useAuthStore();
+const { updateAuthName, updateUserData } = useAuthStore();
 const router = useRouter();
 
   useEffect(()=>{
     updateAuthName('')
+    updateUserData(null)
     router.push('/')
   }, [])
 

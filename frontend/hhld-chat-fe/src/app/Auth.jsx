@@ -8,7 +8,7 @@ import { useAuthStore } from "./zustand/useAuthStore"
 const Auth = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { authName, updateAuthName } = useAuthStore()
+    const { authName, updateAuthName, updateUserData } = useAuthStore()
 
     const router = useRouter();
 
@@ -33,6 +33,7 @@ const Auth = () => {
                 console.log('Username already exists');
             } else{
                 updateAuthName(username)
+                updateUserData(res.data?.userData)
                 router.push('/chat')
             }
 
@@ -56,6 +57,7 @@ const Auth = () => {
                 withCredentials: true
             })
             updateAuthName(username)
+            updateUserData(res.data?.userData)
             router.push('/chat')
 
         } catch (error) {
@@ -76,8 +78,8 @@ const Auth = () => {
             {
                 withCredentials: true
             })
-            console.log(res)
             updateAuthName("test")
+            updateUserData(res.data?.userData)
             router.push('/chat')
 
         } catch (error) {

@@ -11,9 +11,9 @@ const signup = async (req, res) => {
             res.status(201).json({message: 'Username already exists'});
         } else {
             const user = new User({username: username, password: hashedPassword});
-            await user.save();
+            const result = await user.save();
             generateJWTTokenAndSetCookie(user._id, res);
-            res.status(201).json({message: 'User signed up successfully'});
+            res.status(201).json({message: 'User signed up successfully', userData: {username: result.username, groups: result.groups}});
         }
     } catch(error) {
         console.log(error.message);
@@ -36,7 +36,7 @@ export const login = async (req, res) => {
             }
             else{
                 generateJWTTokenAndSetCookie(foundUser?._id, res);
-                res.status(201).json({message: 'User login successfully'});
+                res.status(201).json({message: 'User login successfully', userData: {username: foundUser.username, image: foundUser.image, groups: foundUser.groups}});
             }
         }
     } catch(error) {

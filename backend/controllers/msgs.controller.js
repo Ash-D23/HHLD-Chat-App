@@ -10,7 +10,6 @@ export const addMsgToConversation = async (participants, msg, isGroup, groupName
 };
 
 const addToGroupConversation = async (participants, msg, groupName) => {
-    console.log(groupName)
     try {
         // Find conversation by participants
         let conversation = await Conversation.findOne({ users: { $all: participants }, groupName: groupName });
@@ -28,13 +27,14 @@ const addToGroupConversation = async (participants, msg, groupName) => {
 }
 
 const addToConversation = async (participants, msg) => {
+    
     try {
         // Find conversation by participants
-        let conversation = await Conversation.findOne({ users: { $all: participants } });
+        let conversation = await Conversation.findOne({ users: { $all: participants }, groupName: null });
  
         // If conversation doesn't exist, create a new one
         if (!conversation) {
-            conversation = await Conversation.create({ users: participants });
+            conversation = await Conversation.create({ users: participants, groupName: null });
         }
         // Add msg to the conversation
           conversation.msgs.push(msg);
@@ -50,7 +50,7 @@ const getMsgsForConversation = async (req, res) => {
         const { sender, receiver } = req.query;
         const participants = [sender, receiver];
         // Find conversation by participants
-        const conversation = await Conversation.findOne({ users: { $all: participants } });
+        const conversation = await Conversation.findOne({ users: { $all: participants }, groupName: null });
         if (!conversation) {
             console.log('Conversation not found');
             return res.status(200).send();

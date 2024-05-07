@@ -5,7 +5,9 @@ export const useAuthStore = create(
     persist(
         (set) => ({
             authName: '',
-            updateAuthName: (userName) => set((state) => ({ authName: userName}))
+            userData: {},
+            updateAuthName: (userName) => set((state) => ({ authName: userName})),
+            updateUserData: (data) => set((state) => ({ userData: data }))
         }),
         {
             name: 'auth-storage'

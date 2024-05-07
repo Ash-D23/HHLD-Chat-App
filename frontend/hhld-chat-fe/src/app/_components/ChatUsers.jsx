@@ -13,7 +13,7 @@ import { useGroups } from '../zustand/useGroups';
 const ChatUsers = () => {
   const { chatSelection, updateChatSelection } = useChatSelection();
   const { users } = useUsersStore();
-  const { authName } = useAuthStore()
+  const { authName, userData } = useAuthStore()
   const { chatReceiver, updateChatReceiver } = useChatReceiverStore();
   const { updateChatMsgs} = useChatMsgsStore();
   const router = useRouter();
@@ -102,8 +102,9 @@ const ChatUsers = () => {
         <div className='w-full h-16 bg-green-500 flex items-center px-4 py-2 text-lg text-white font-bold text-center'>
                 <div className='w-16 ml-2'>
                     <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full">
-                        <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-                    </div>
+                        { userData?.image ? <img class="w-10 h-10 rounded-full" src={userData?.image} alt="profile image"></img> :
+                            <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                        }</div>
                 </div>
                 <div className="w-3/5 font-medium text-left">
                         <div className='text-white'>{authName}</div>
