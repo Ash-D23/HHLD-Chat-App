@@ -77,7 +77,7 @@ const ChatUsers = () => {
 
     <div className="h-screen min-w-96">
         <div className='w-full h-12 bg-sky-600 px-4 py-2 text-lg border-b border-gray-200 text-white font-bold text-center'>
-            My Chat App
+            Chat Bubble
         </div>
             <div className="sm:hidden">
                 <label for="tabs" className="sr-only">Select</label>

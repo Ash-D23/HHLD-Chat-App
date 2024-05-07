@@ -1,3 +1,5 @@
+
+
 export const dateDiff = (dateString, now) => {
     if(!dateString){
         return ""
@@ -16,5 +18,26 @@ export const dateDiff = (dateString, now) => {
         return diffMins > 1 ? `${diffMins} mins ago` : `${diffMins} min ago`
     }else{
         return "1 min ago"
+    }
+}
+
+export const convertTime = (data, now) => {
+    if(!data){
+        return
+    }
+
+    const date = new Date(data);
+    
+    const diffMs = (now - date); 
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if(diffDays >= 1){
+        const month = date.toLocaleString('default', { month: 'long' });
+        const day = date.getDate();
+        return `${month} ${day}`
+    }else{
+        const formatter = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' });
+        const formattedTime = formatter.format(date);
+        return formattedTime
     }
 }

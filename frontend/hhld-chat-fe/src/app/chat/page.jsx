@@ -13,6 +13,7 @@ import AddGroupModal from '../_components/AddGroupModal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useGroups } from '../zustand/useGroups';
+import { convertTime } from '../utils/util';
 
 const Chat = () => {
 
@@ -98,7 +99,8 @@ const Chat = () => {
             const msgToBeSent = {
                 text: msg,
                 sender: authName,
-                receiver: chatReceiver
+                receiver: chatReceiver,
+                createdAt: new Date()
             };
 
             if(socket) {
@@ -113,7 +115,8 @@ const Chat = () => {
                 text: msg,
                 sender: authName,
                 groupName: chatReceiver,
-                members: groupDetails.members
+                members: groupDetails.members,
+                createdAt: new Date()
             };
             if(socket) {
                 socket.emit('group msg', msgToBeSent);
@@ -146,7 +149,7 @@ const Chat = () => {
                                 <div className={`flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 ${msg.sender === authName ? "bg-green-200" : "bg-blue-200"} rounded-e-xl rounded-es-xl`}>
                                     <div className="flex items-center space-x-2 rtl:space-x-reverse">
                                         <span className="text-sm font-semibold text-gray-900">{msg.sender}</span>
-                                        <span className="text-sm font-normal text-gray-500 dark:text-blacky-400">11:46</span>
+                                        <span className="text-sm font-normal text-gray-500 dark:text-blacky-400">{convertTime(msg.createdAt, new Date())}</span>
                                     </div>
                                     <p className="text-sm font-normal py-2.5 text-gray-900">{msg.text}</p>
                                 </div>

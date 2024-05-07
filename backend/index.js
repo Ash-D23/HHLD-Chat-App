@@ -72,7 +72,8 @@ const io = new Server(server, {
         {
           text: msg.text,
           sender:msg.sender,
-          receiver:msg.receiver
+          receiver:msg.receiver,
+          createdAt: msg.createdAt
         }
       )
       // socket.broadcast.emit('chat msg', msg)
@@ -87,7 +88,8 @@ const io = new Server(server, {
       addMsgToConversation(members,
         {
           text: msg.text,
-          sender: msg.sender
+          sender: msg.sender,
+          createdAt: msg.createdAt
         },
         true, msg.groupName
       )
