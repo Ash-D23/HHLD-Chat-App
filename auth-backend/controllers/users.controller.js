@@ -16,7 +16,7 @@ export const updateUserStatus = async (req, res) => {
             { is_online: req.body.is_online, last_seen: req.body.last_seen}, 
             { new: true }
         );
-        console.log("User Status Updated in DB - " + updatedUser.username)
+        
         res.status(200).json({ msg: "user updated succesfully"})
     }catch(err){
         console.log(err.message)
@@ -28,7 +28,7 @@ export const updateUsersGroup = async (req, res) => {
         const { groupName, members } = req.body
 
         for(let userName of members){
-            console.log(userName)
+
             let user = await User.findOne({ username: userName });
 
             // If conversation doesn't exist, create a new one

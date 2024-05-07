@@ -14,7 +14,7 @@ const addToGroupConversation = async (participants, msg, groupName) => {
     try {
         // Find conversation by participants
         let conversation = await Conversation.findOne({ users: { $all: participants }, groupName: groupName });
-        console.log(conversation)
+
         // If conversation doesn't exist, create a new one
         if (!conversation) {
             conversation = await Conversation.create({ users: participants, groupName: groupName });

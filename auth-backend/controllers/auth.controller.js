@@ -41,7 +41,6 @@ export const login = async (req, res) => {
         }
     } catch(error) {
         console.log(error.message);
-        console.log("failed")
         res.status(500).json({message: "User reg failed!"});
     }
 }

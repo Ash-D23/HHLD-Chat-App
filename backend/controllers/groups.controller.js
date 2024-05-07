@@ -4,7 +4,7 @@ import axios from 'axios'
 export const addGroup = async (req, res) => {
     try {
         const {groupName, Owner, members} = req.body;
-        console.log(req.body)
+
         const foundgroup = await groups.findOne({groupName});
         if(foundgroup) {
             res.status(201).json({message: 'Group Name already exists'});
