@@ -46,6 +46,22 @@ const io = new Server(server, {
       
     });
 
+    //Pub Sub group_recieverName_groupName
+    socket.on('grp subscribe', (data) => {
+      for(let group of data.groups){
+        subscribe(`group_${username}_${group.groupName}`, (data) => {
+          const jsonData = JSON.parse(data)
+
+            socket.emit('group msg', {
+              text: jsonData.text,
+              sender: jsonData.sender,
+              groupName: jsonData.groupName
+            })
+          
+        })
+      }
+    })
+
     // Update user status in db
     updateUserStatus(username, new Date(), true)
     // broadcast all that this user is online 
@@ -57,7 +73,24 @@ const io = new Server(server, {
     subscribe(channelName, (msg) => {
       socket.emit("chat msg", JSON.parse(msg));
     });
-   
+
+    subscribe(`add_group_${username}`, (data) => {
+      const d = JSON.parse(data)
+      socket.emit('add group', d);
+      
+      subscribe(`group_${username}_${d.groupName}`, (groupData) => {
+        const jsonData = JSON.parse(groupData)
+
+          socket.emit('group msg', {
+            text: jsonData.text,
+            sender: jsonData.sender,
+            groupName: jsonData.groupName
+          })
+        
+      })
+
+    })
+
     socket.on('chat msg', (msg) => {
       const recieverSocket = userSocketMap[msg.receiver]
       if(recieverSocket){
@@ -110,6 +143,11 @@ const io = new Server(server, {
           })
         }else{
           //Pub Sub group_recieverName_groupName
+          publish(`group_${receiver}_${msg.groupName}`, JSON.stringify({
+            text: msg.text,
+            sender: msg.sender,
+            groupName: msg.groupName
+          }))
         }
       }
     })
@@ -127,8 +165,21 @@ const io = new Server(server, {
           recieverSocket.emit('add group', group)
         }else{
           //Pub Sub group_recieverName_groupName
+          publish(`add_group_${receiver}`, JSON.stringify(group))
         }
       }
+
+      subscribe(`group_${username}_${group.groupName}`, (data) => {
+        const jsonData = JSON.parse(data)
+
+          socket.emit('group msg', {
+            text: jsonData.text,
+            sender: jsonData.sender,
+            groupName: jsonData.groupName
+          })
+        
+      })
+
     })
 
     socket.on('disconnect', () => {
@@ -137,8 +188,7 @@ const io = new Server(server, {
 
       // update user status in DB
       updateUserStatus(username, new Date(), false)
-
-      // broadcast to all users that user is offline
+      
     });
 
  });

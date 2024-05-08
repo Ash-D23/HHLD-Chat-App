@@ -21,7 +21,7 @@ const Chat = () => {
     const [msg, setMsg] = useState('');
     const [socket, setSocket] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const { authName } = useAuthStore();
+    const { authName, userData } = useAuthStore();
     const { updateUsers, UpdateUserStatus } = useUsersStore();
     const { chatReceiver } = useChatReceiverStore();
     const { chatMsgs, updateChatMsg, updateChatMsgswithReciever } = useChatMsgsStore();
@@ -88,6 +88,10 @@ const Chat = () => {
                     theme: "colored"
                 });
             })
+
+            if(userData){
+                newSocket.emit('grp subscribe', { groups: userData.groups });
+            }
 
             // Clean up function
             return () => newSocket.close();
