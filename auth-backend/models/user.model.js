@@ -1,15 +1,5 @@
 import mongoose from "mongoose";
 
-const userGroupSchema = mongoose.Schema({
-    groupName: {
-        type: String
-    },
-    members: [{
-        type: String
-    }]
-    
- });
-
 const userSchema = mongoose.Schema({
     username : {
         type: String,
@@ -28,8 +18,7 @@ const userSchema = mongoose.Schema({
     },
     is_online : {
         type: Boolean
-    },
-    groups : [userGroupSchema]
+    }
 });
 
 const userModel = mongoose.model('User', userSchema);

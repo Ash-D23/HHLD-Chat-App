@@ -1,5 +1,4 @@
 import groups from "../models/group.model.js";
-import axios from 'axios'
 
 export const addGroup = async (req, res) => {
     try {
@@ -12,17 +11,25 @@ export const addGroup = async (req, res) => {
             const group = new groups({groupName: groupName, Owner: Owner, members: members});
             await group.save();
 
-            //Add in User's schema
-            const result = await axios.post(`${process.env.BE_HOST}:5000/users/updateUsersGroup`, {
-                groupName: groupName,
-                members: members
-            })
-
             res.status(201).json({message: 'Group Created Succesfully'});
         }
     } catch(error) {
         console.log(error.message);
         res.status(500).json({message: "Group creation failed!"});
+    }
+}
+
+export const getGroups = async (req, res) => {
+    try {
+        const {username} = req.body;
+
+        const foundgroups = await groups.find({members: { $all: [username] }}, 'groupName members')
+
+        res.status(201).json(foundgroups);
+
+    } catch(error) {
+        console.log(error.message);
+        res.status(500).json({message: "Error fetching groups"});
     }
 }
 

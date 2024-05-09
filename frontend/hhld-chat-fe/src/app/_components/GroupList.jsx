@@ -1,23 +1,10 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useGroups } from '../zustand/useGroups'
 
 const GroupList = ({ chatReceiver, setChatReceiver }) => {
 
-    const { groups, updateGroups } = useGroups()
-
-    const getGroupData = async () => {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BE_HOST}:5000/groups`,
-        {
-            withCredentials: true
-        })
-        
-        updateGroups(res.data);
-    }
-
-  useEffect(()=>{
-    getGroupData()
-  }, [])
+  const { groups } = useGroups()
 
   return (
     <ul className="w-full text-gray-900 ">

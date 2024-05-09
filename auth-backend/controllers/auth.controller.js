@@ -13,7 +13,7 @@ const signup = async (req, res) => {
             const user = new User({username: username, password: hashedPassword});
             const result = await user.save();
             generateJWTTokenAndSetCookie(user._id, res);
-            res.status(201).json({message: 'User signed up successfully', userData: {username: result.username, groups: result.groups}});
+            res.status(201).json({message: 'User signed up successfully', userData: {username: result.username}});
         }
     } catch(error) {
         console.log(error.message);
@@ -36,7 +36,7 @@ export const login = async (req, res) => {
             }
             else{
                 generateJWTTokenAndSetCookie(foundUser?._id, res);
-                res.status(201).json({message: 'User login successfully', userData: {username: foundUser.username, image: foundUser.image, groups: foundUser.groups}});
+                res.status(201).json({message: 'User login successfully', userData: {username: foundUser.username, image: foundUser.image}});
             }
         }
     } catch(error) {

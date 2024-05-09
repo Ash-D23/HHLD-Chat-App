@@ -21,12 +21,12 @@ const Chat = () => {
     const [msg, setMsg] = useState('');
     const [socket, setSocket] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const { authName, userData } = useAuthStore();
+    const { authName } = useAuthStore();
     const { updateUsers, UpdateUserStatus } = useUsersStore();
     const { chatReceiver } = useChatReceiverStore();
     const { chatMsgs, updateChatMsg, updateChatMsgswithReciever } = useChatMsgsStore();
     const { chatSelection } = useChatSelection();
-    const {groups, addGroups} = useGroups()
+    const {groups, addGroups, updateGroups} = useGroups()
     const router = useRouter();
 
     const messagesEndRef = useRef(null)
@@ -44,6 +44,15 @@ const Chat = () => {
         updateUsers(res.data);
     }
 
+    const getUserGroups = async () => {
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/groups`,
+        {
+            username: authName
+        })
+
+        return res.data
+    }
+
     useEffect(() => {
         scrollToBottom()
     }, [chatMsgs])
@@ -51,6 +60,14 @@ const Chat = () => {
     useEffect(() => {
         getUserData();
     }, [])
+
+    const subscribeToUserGroups = async (socket) => {
+        const groups = await getUserGroups()
+        if(groups.length !== 0){
+            socket.emit('grp subscribe', { groups });
+        }
+        updateGroups(groups)
+    }
 
     useEffect(() => {
         // Establish WebSocket connection
@@ -89,9 +106,7 @@ const Chat = () => {
                 });
             })
 
-            if(userData){
-                newSocket.emit('grp subscribe', { groups: userData.groups });
-            }
+            subscribeToUserGroups(newSocket)
 
             // Clean up function
             return () => newSocket.close();

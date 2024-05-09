@@ -8,7 +8,7 @@ import { useAuthStore } from "./zustand/useAuthStore"
 const Auth = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { authName, updateAuthName, updateUserData } = useAuthStore()
+    const { authName, updateUserData } = useAuthStore()
 
     const router = useRouter();
 
@@ -32,7 +32,6 @@ const Auth = () => {
             if(res.data.message === "Username already exists") {
                 console.log('Username already exists');
             } else{
-                updateAuthName(username)
                 updateUserData(res.data?.userData)
                 router.push('/chat')
             }
@@ -56,7 +55,6 @@ const Auth = () => {
             {
                 withCredentials: true
             })
-            updateAuthName(username)
             updateUserData(res.data?.userData)
             router.push('/chat')
 
@@ -78,7 +76,6 @@ const Auth = () => {
             {
                 withCredentials: true
             })
-            updateAuthName("test")
             updateUserData(res.data?.userData)
             router.push('/chat')
 
