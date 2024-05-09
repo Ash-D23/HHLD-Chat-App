@@ -46,19 +46,23 @@ const io = new Server(server, {
       
     });
 
+    const subscribeUserToGrp = (group) => {
+      subscribe(`group_${username}_${group.groupName}`, (data) => {
+        const jsonData = JSON.parse(data)
+
+          socket.emit('group msg', {
+            text: jsonData.text,
+            sender: jsonData.sender,
+            groupName: jsonData.groupName
+          })
+        
+      })
+    }
+
     //Pub Sub group_recieverName_groupName
     socket.on('grp subscribe', (data) => {
       for(let group of data.groups){
-        subscribe(`group_${username}_${group.groupName}`, (data) => {
-          const jsonData = JSON.parse(data)
-
-            socket.emit('group msg', {
-              text: jsonData.text,
-              sender: jsonData.sender,
-              groupName: jsonData.groupName
-            })
-          
-        })
+        subscribeUserToGrp(group)
       }
     })
 
@@ -75,19 +79,10 @@ const io = new Server(server, {
     });
 
     subscribe(`add_group_${username}`, (data) => {
-      const d = JSON.parse(data)
-      socket.emit('add group', d);
-      
-      subscribe(`group_${username}_${d.groupName}`, (groupData) => {
-        const jsonData = JSON.parse(groupData)
+      const jsonData = JSON.parse(data)
+      socket.emit('add group', jsonData);
 
-          socket.emit('group msg', {
-            text: jsonData.text,
-            sender: jsonData.sender,
-            groupName: jsonData.groupName
-          })
-        
-      })
+      subscribeUserToGrp(jsonData)
 
     })
 
@@ -169,16 +164,7 @@ const io = new Server(server, {
         }
       }
 
-      subscribe(`group_${username}_${group.groupName}`, (data) => {
-        const jsonData = JSON.parse(data)
-
-          socket.emit('group msg', {
-            text: jsonData.text,
-            sender: jsonData.sender,
-            groupName: jsonData.groupName
-          })
-        
-      })
+      subscribeUserToGrp(group)
 
     })
 
