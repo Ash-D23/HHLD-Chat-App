@@ -33,7 +33,6 @@ export function subscribe(channel, callback) {
      console.error('Error subscribing to channel:', err);
      return;
    }
-   console.log(`Subscribed to ${channel}`);
  });
 
  // When a message is received on any subscribed channel,
@@ -41,7 +40,6 @@ export function subscribe(channel, callback) {
  // calls the provided callback function with the received message
 
  subscriber.on('message', (subscribedChannel, message) => {
-   console.log('Subscriber ', subscribedChannel, ' has received msg ', message);
    if (subscribedChannel === channel) {
      callback(message);
    }
@@ -55,7 +53,6 @@ export function unsubscribe(channel) {
      console.error('Error unsubscribing from channel:', err);
      return;
    }
-   console.log(`Unsubscribed from ${channel}`);
  });
 }
 
@@ -63,7 +60,6 @@ export function unsubscribe(channel) {
 export async function publish(channel, message) {
  try {
    await publisher.publish(channel, message);
-   console.log(`Published message to ${channel}: ${message}`);
  } catch (error) {
    console.error('Error publishing message:', error);
  }

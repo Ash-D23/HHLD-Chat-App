@@ -52,7 +52,6 @@ const getMsgsForConversation = async (req, res) => {
         // Find conversation by participants
         const conversation = await Conversation.findOne({ users: { $all: participants }, groupName: null });
         if (!conversation) {
-            console.log('Conversation not found');
             return res.status(200).send();
         }
         return res.json(conversation.msgs);

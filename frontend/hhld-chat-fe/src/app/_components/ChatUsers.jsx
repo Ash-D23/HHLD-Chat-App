@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import { useChatSelection } from '../zustand/useChatSelection';
 import UsersList from './UsersList';
 import GroupList from './GroupList';
-import { useGroups } from '../zustand/useGroups';
 
 const ChatUsers = () => {
   const { chatSelection, updateChatSelection } = useChatSelection();
