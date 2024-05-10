@@ -8,7 +8,7 @@ import { useAuthStore } from "./zustand/useAuthStore"
 const Auth = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { authName, updateAuthName } = useAuthStore()
+    const { authName, updateUserData } = useAuthStore()
 
     const router = useRouter();
 
@@ -32,7 +32,7 @@ const Auth = () => {
             if(res.data.message === "Username already exists") {
                 console.log('Username already exists');
             } else{
-                updateAuthName(username)
+                updateUserData(res.data?.userData)
                 router.push('/chat')
             }
 
@@ -55,8 +55,7 @@ const Auth = () => {
             {
                 withCredentials: true
             })
-
-            updateAuthName(username)
+            updateUserData(res.data?.userData)
             router.push('/chat')
 
         } catch (error) {
@@ -77,8 +76,7 @@ const Auth = () => {
             {
                 withCredentials: true
             })
-
-            updateAuthName("test")
+            updateUserData(res.data?.userData)
             router.push('/chat')
 
         } catch (error) {
@@ -95,7 +93,7 @@ return (
         <div className="w-full bg-sky-200 rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0  dark:border-sky-700">
             <div>
                 <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-                    <h2 className="text-center text-sky-700 font-bold text-2xl">My Chat App</h2>
+                    <h2 className="text-center text-sky-700 font-bold text-3xl">Chat Bubble</h2>
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                         <form className="space-y-5" >
                             <div>
