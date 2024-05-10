@@ -157,8 +157,8 @@ const Chat = () => {
 
 
     return (
-        <div className='h-screen flex'>
-            <div className='w-1/4'>
+        <div className='h-screen flex box-border'>
+            <div className='w-1/4 min-w-96'>
                 <ChatUsers />
             </div>
             <div className='h-screen w-4/5 flex flex-col'>

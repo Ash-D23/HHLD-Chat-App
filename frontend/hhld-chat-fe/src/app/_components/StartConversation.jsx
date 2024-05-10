@@ -3,8 +3,8 @@ import React from 'react'
 const StartConversation = ({ selection, setShowModal }) => {
   return (
      selection === 'Chat' ? (
-            <div className='flex items-center justify-center p-10'>
-                <img src="/chat.svg" />
+            <div className='flex items-center justify-center p-10 md:p-5'>
+                <img className="overflow-hidden" src="/chat.svg" />
             </div>
         ) : (
             <div className='h-full'>
@@ -13,9 +13,9 @@ const StartConversation = ({ selection, setShowModal }) => {
                 </div>
                 <div className='h-2/6 flex flex-col items-center justify-center p-10 pb-3 w-full'>
                     <p class="text-2xl font-bold text-gray-900 text=center m-3 ">Let's start a group chat</p>
-                        <button onClick={setShowModal} type="button" class="focus:outline-none text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg px-5 py-2.5 me-2 mb-2">Create Group</button> 
-                    </div>
+                    <button onClick={setShowModal} type="button" class="focus:outline-none text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg px-5 py-2.5 me-2 mb-2">Create Group</button> 
                 </div>
+            </div>
         ) 
   )
 }
