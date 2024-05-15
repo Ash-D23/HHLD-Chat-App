@@ -5,6 +5,7 @@ import { useAuthStore } from '../zustand/useAuthStore';
 import axios from 'axios';
 import { useGroups } from '../zustand/useGroups';
 import { toast } from 'react-toastify';
+import { useChatMsgsStore } from '../zustand/useChatMsgsStore';
 
 const AddGroupModal = ({ closeModal, sendAddGroupNotification }) => {
 
@@ -14,6 +15,7 @@ const AddGroupModal = ({ closeModal, sendAddGroupNotification }) => {
    const [search, setSearch] = useState('')
    const [groupName, setGroupName] = useState('')
    const { addGroups } = useGroups() 
+   const { addNewGroupConversation } = useChatMsgsStore();
 
    const addSelectedUser = user => {
     setSelectedUsers(prev => new Set(prev.add(user)))
@@ -53,9 +55,9 @@ const AddGroupModal = ({ closeModal, sendAddGroupNotification }) => {
                 members: members
             })
     
-            console.log(res.data.message)
 
             addGroups({groupName, members, Owner: authName })
+            addNewGroupConversation({groupName, members, Owner: authName })
 
             toast.success(`Group: ${groupName} Created`, {
                 position: "top-right",

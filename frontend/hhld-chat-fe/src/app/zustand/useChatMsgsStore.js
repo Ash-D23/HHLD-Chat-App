@@ -67,5 +67,13 @@ export const useChatMsgsStore = create( (set) => ({
 
    },
    updateChatConversationList: (data) => set({ ChatConversationList: data}),
-   updateGroupConversationList: (data) => set({ GroupConversationList: data})
+   updateGroupConversationList: (data) => set({ GroupConversationList: data}),
+   addNewGroupConversation: (group) => {
+      set((state) => ({ GroupConversationList: [...state.GroupConversationList, {
+         ...group,
+         unread_count: 0,
+         last_message: new Date()
+      }] }))
+   }
+
 }));
