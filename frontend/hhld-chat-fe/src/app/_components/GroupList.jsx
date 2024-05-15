@@ -50,10 +50,10 @@ const GroupList = ({ chatReceiver, setChatReceiver }) => {
     const groupList = addGroupsFromMap(groups)
 
     const SortedGroupsList = groupList.sort((group1, group2) => {
-        let date1 = group1.last_message ? group1.last_message : 0
-        let date2 = group2.last_message ? group2.last_message : 0
+        let date1 = group1.last_message ? new Date(group1.last_message) : new Date("1/1/2000")
+        let date2 = group2.last_message ? new Date(group2.last_message) : new Date("1/1/2000")
 
-        return date1 - date2
+        return date2 - date1
 
     })
 

@@ -10,6 +10,7 @@ export const addMsgToConversation = async (participants, msg, isGroup, groupName
 };
 
 const addToGroupConversation = async (participants, msg, groupName) => {
+
     try {
         // Find conversation by participants
         let conversation = await Conversation.findOne({ users: { $all: participants }, groupName: groupName });
@@ -17,10 +18,25 @@ const addToGroupConversation = async (participants, msg, groupName) => {
         // If conversation doesn't exist, create a new one
         if (!conversation) {
             conversation = await Conversation.create({ users: participants, groupName: groupName, isGroup: true });
+
+            participants.forEach((user) => {
+                const userRead = new userReads({
+                    username: user,
+                    unread_count: 0
+                })
+                conversation.last_checked.push(userRead)
+            })
         }
+
+        conversation.last_checked.forEach((user) => {
+            if(user.username !== msg.sender){
+                user.unread_count = user?.unread_count + 1
+            }
+        })
         // Add msg to the conversation
-          conversation.msgs.push(msg);
-          await conversation.save();
+        conversation.last_message = new Date()
+        conversation.msgs.push(msg);
+        await conversation.save();
     } catch (error) {
         console.log('Error adding message to conversation: ' + error.message);
     }
@@ -32,13 +48,37 @@ const addToConversation = async (participants, msg) => {
         // Find conversation by participants
         let conversation = await Conversation.findOne({ users: { $all: participants }, groupName: null });
  
+        const userRead = new userReads({
+            username: msg.receiver,
+            unread_count: 1
+        })
         // If conversation doesn't exist, create a new one
         if (!conversation) {
             conversation = await Conversation.create({ users: participants, groupName: null, isGroup: false });
+
+            conversation.last_checked = [userRead]
+        }else{
+            const ele = conversation.last_checked?.find((ele) => ele.username === msg.receiver)
+            if(!ele){
+                if(conversation.last_checked){
+                    conversation.last_checked.push(userRead)
+                }else{
+                    conversation.last_checked = [userRead]
+                }
+            }else{
+                conversation.last_checked.forEach((ele) => {
+                    if(ele.username === msg.receiver){
+                        ele.unread_count = ele.unread_count+1
+                    }
+                })
+            }
         }
+
+        conversation.last_message = new Date()
         // Add msg to the conversation
-          conversation.msgs.push(msg);
-          await conversation.save();
+        conversation.msgs.push(msg);
+
+        await conversation.save();
     } catch (error) {
         console.log('Error adding message to conversation: ' + error.message);
     }
@@ -102,7 +142,6 @@ const updateConversationLastChecked = async (id, username) => {
         if (!conversation) {
             return
         }
-
         // update last checked by user
         
         const userRead = new userReads({
@@ -196,6 +235,49 @@ export const getGroupConversationForUser = async (req, res) => {
     }catch(err){
         console.log(err.message)
         res.status(500).json({ error: 'Server error' });
+    }
+}
+
+export const updateChatConversationForReciever = async (req, res) => {
+    try{
+        const { users, username } = req.body
+        // find conversation
+        let conversation = await Conversation.findOne({ users: { $all: users }, groupName: null });
+
+        if(!conversation){
+            return
+        }
+
+        await updateConversationLastChecked(conversation._id, username)
+        res.status(200).send()
+    }catch(err){
+        console.log(err.message)
+    }
+}
+
+export const updateGroupConversationForReciever = async (req, res) => {
+    try{
+        const {  groupName, username } = req.body
+
+        // find conversation
+        const data= await Conversation.findOne({ groupName: groupName });
+
+        if(!data){
+            return
+        }
+        
+        data.last_checked.forEach((ele) => {
+            if(ele.username === username){
+                ele.unread_count = 0,
+                ele.last_read = new Date()
+            }
+        })
+
+        await Conversation.findOneAndUpdate({ groupName: groupName }, {...data})
+        
+        res.status(200).send()
+    }catch(err){
+        console.log(err.message)
     }
 }
 

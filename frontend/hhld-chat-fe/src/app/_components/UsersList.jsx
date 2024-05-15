@@ -53,10 +53,10 @@ const UsersList = ({ users, chatReceiver, setChatReceiver }) => {
     const userList = addUsersFromMap(users)
 
     const SortedUsersList = userList.sort((user1, user2) => {
-        let date1 = user1.last_message ? user1.last_message : 0
-        let date2 = user2.last_message ? user2.last_message : 0
+        let date1 = user1.last_message ? new Date(user1.last_message) : new Date("1/1/2000")
+        let date2 = user2.last_message ? new Date(user2.last_message) : new Date("1/1/2000")
 
-        return date1 - date2
+        return date2 - date1
 
     })
 

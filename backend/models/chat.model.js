@@ -20,8 +20,7 @@ const userReadsSchema = mongoose.Schema({
         type: String
     },
     last_read: {
-        type: Date,
-        default: Date.now
+        type: Date
     },
     unread_count: {
         type: Number

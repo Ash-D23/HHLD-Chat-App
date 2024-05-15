@@ -88,6 +88,7 @@ const io = new Server(server, {
 
     socket.on('chat msg', (msg) => {
       const recieverSocket = userSocketMap[msg.receiver]
+      
       if(recieverSocket){
         recieverSocket.emit('chat msg', msg)
       }else{
