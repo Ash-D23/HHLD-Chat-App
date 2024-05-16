@@ -15,6 +15,11 @@ const addToGroupConversation = async (participants, msg, groupName) => {
         // Find conversation by participants
         let conversation = await Conversation.findOne({ users: { $all: participants }, groupName: groupName });
 
+        if(conversation){
+            conversation.msgs.push(msg)
+            await Conversation.findOneAndUpdate({ _id: conversation._id }, { ...conversation })
+        }
+
         // If conversation doesn't exist, create a new one
         if (!conversation) {
             conversation = await Conversation.create({ users: participants, groupName: groupName, isGroup: true });
@@ -26,17 +31,21 @@ const addToGroupConversation = async (participants, msg, groupName) => {
                 })
                 conversation.last_checked.push(userRead)
             })
+            
+            conversation.msgs.push(msg);
+            conversation.last_message = new Date()
+            await  Conversation.findOneAndUpdate({ _id: conversation._id }, { ...conversation })
+        }else{
+            conversation.last_message = new Date()
+            conversation.last_checked.forEach((user) => {
+                if(user.username !== msg.sender){
+                    user.unread_count = user?.unread_count + 1
+                }
+            })
+            
+            await Conversation.findOneAndUpdate({ _id: conversation._id }, { ...conversation })
         }
 
-        conversation.last_checked.forEach((user) => {
-            if(user.username !== msg.sender){
-                user.unread_count = user?.unread_count + 1
-            }
-        })
-        // Add msg to the conversation
-        conversation.last_message = new Date()
-        conversation.msgs.push(msg);
-        await conversation.save();
     } catch (error) {
         console.log('Error adding message to conversation: ' + error.message);
     }
@@ -166,7 +175,7 @@ const updateConversationLastChecked = async (id, username) => {
             })
         }
 
-        await conversation.save();
+        await Conversation.findOneAndUpdate({ _id: id }, { ...conversation })
 
     }catch(err){
         console.log(err.message)
