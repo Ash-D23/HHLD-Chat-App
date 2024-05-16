@@ -1,4 +1,5 @@
 import groups from "../models/group.model.js";
+import Conversation, { userReads } from "../models/chat.model.js";
 
 export const addGroup = async (req, res) => {
     try {
@@ -10,6 +11,18 @@ export const addGroup = async (req, res) => {
         } else {
             const group = new groups({groupName: groupName, Owner: Owner, members: members});
             await group.save();
+
+            let conversation = await Conversation.create({ users: members, groupName: groupName, isGroup: true, last_message: new Date() });
+
+            members.forEach((user) => {
+                const userRead = new userReads({
+                    username: user,
+                    unread_count: 0
+                })
+                conversation.last_checked.push(userRead)
+            })
+
+            await conversation.save();
 
             res.status(201).json({message: 'Group Created Succesfully'});
         }

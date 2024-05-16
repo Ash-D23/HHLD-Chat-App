@@ -74,6 +74,58 @@ export const useChatMsgsStore = create( (set) => ({
          unread_count: 0,
          last_message: new Date()
       }] }))
+   },
+   updateChatConversationOnSend: (msg) => {
+
+      set((state) => {
+         const newArr = [...state.ChatConversationList]
+         const index = newArr.findIndex((data) => {
+            if(data.users[0] === msg.receiver || data.users[1] === msg.receiver ){
+               return true
+            }else{
+               return false
+            }
+         })
+
+         if(index===-1){
+            newArr.push({
+               users: [msg.sender, msg.receiver],
+               unread_count: 0,
+               last_message: new Date(),
+               last_read: new Date()
+            })
+         }else{
+            newArr[index].last_message = new Date()
+            newArr[index].last_read = new Date()
+         }
+
+         return {
+            ChatConversationList: newArr
+         }
+      })
+   },
+   updateGroupConversationOnSend: (msg) => {
+      set((state) => {
+         const newArr = [...state.GroupConversationList]
+         const index = newArr.findIndex((data) => {
+            if(data.groupName === msg.groupName ){
+               return true
+            }else{
+               return false
+            }
+         })
+
+         if(index !==-1){
+            newArr[index].last_message = new Date()
+            return {
+               GroupConversationList: newArr
+            }
+         }else{
+            return state
+         }
+
+         
+      })
    }
 
 }));

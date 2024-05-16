@@ -24,7 +24,7 @@ const Chat = () => {
     const { authName } = useAuthStore();
     const { updateUsers, UpdateUserStatus } = useUsersStore();
     const { chatReceiver } = useChatReceiverStore();
-    const { chatMsgs, updateChatMsg, updateChatMsgswithReciever, addNewGroupConversation } = useChatMsgsStore();
+    const { chatMsgs, updateChatMsg, updateChatMsgswithReciever, addNewGroupConversation, updateChatConversationOnSend, updateGroupConversationOnSend} = useChatMsgsStore();
     const { chatSelection } = useChatSelection();
     const {groups, addGroups, updateGroups} = useGroups()
     const [isLoading, setIsLoading] = useState(true)
@@ -132,6 +132,7 @@ const Chat = () => {
             if(socket) {
                 socket.emit('chat msg', msgToBeSent);
                 updateChatMsg(msgToBeSent)
+                updateChatConversationOnSend(msgToBeSent)
                 setMsg('');
             }
         }else{
@@ -147,6 +148,7 @@ const Chat = () => {
             if(socket) {
                 socket.emit('group msg', msgToBeSent);
                 updateChatMsg(msgToBeSent)
+                updateGroupConversationOnSend(msgToBeSent)
                 setMsg('');
             }
         }
