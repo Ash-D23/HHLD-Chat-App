@@ -15,10 +15,10 @@ const addToGroupConversation = async (participants, msg, groupName) => {
         // Find conversation by participants
         let conversation = await Conversation.findOne({ users: { $all: participants }, groupName: groupName });
 
-        if(conversation){
-            conversation.msgs.push(msg)
-            await Conversation.findOneAndUpdate({ _id: conversation._id }, { ...conversation })
-        }
+        // if(conversation){
+        //     conversation.msgs.push(msg)
+        //     await Conversation.findOneAndUpdate({ _id: conversation._id }, { ...conversation })
+        // }
 
         // If conversation doesn't exist, create a new one
         if (!conversation) {
@@ -34,15 +34,15 @@ const addToGroupConversation = async (participants, msg, groupName) => {
             
             conversation.msgs.push(msg);
             conversation.last_message = new Date()
-            await  Conversation.findOneAndUpdate({ _id: conversation._id }, { ...conversation })
+            await Conversation.findOneAndUpdate({ _id: conversation._id }, { ...conversation })
         }else{
+            conversation.msgs.push(msg)
             conversation.last_message = new Date()
             conversation.last_checked.forEach((user) => {
                 if(user.username !== msg.sender){
                     user.unread_count = user?.unread_count + 1
                 }
             })
-            
             await Conversation.findOneAndUpdate({ _id: conversation._id }, { ...conversation })
         }
 
@@ -266,7 +266,7 @@ export const updateChatConversationForReciever = async (req, res) => {
 
 export const updateGroupConversationForReciever = async (req, res) => {
     try{
-        const {  groupName, username } = req.body
+        const { groupName, username } = req.body
 
         // find conversation
         const data= await Conversation.findOne({ groupName: groupName });
@@ -281,8 +281,7 @@ export const updateGroupConversationForReciever = async (req, res) => {
                 ele.last_read = new Date()
             }
         })
-
-        await Conversation.findOneAndUpdate({ groupName: groupName }, {...data})
+        await Conversation.findOneAndUpdate({ groupName: groupName }, { $set: { last_checked: data.last_checked }})
         
         res.status(200).send()
     }catch(err){

@@ -33,18 +33,44 @@ export const useChatMsgsStore = create( (set) => ({
          updateChatRecievedToDB(msg, username)
       }else if(msg.sender !== useChatReceiverStore.getState().chatReceiver && !msg.groupName){
          // Update Chat ConverationList
-         set((state) => ({
-            ChatConversationList: state.ChatConversationList.map((chat)=>{
-               if(chat.users[0] === msg.sender || chat.users[1] === msg.sender){
-                  chat.unread_count += 1
-                  chat.last_message = new Date()
+         // set((state) => ({
+         //    ChatConversationList: state.ChatConversationList.map((chat)=>{
+         //       if(chat.users[0] === msg.sender || chat.users[1] === msg.sender){
+         //          chat.unread_count += 1
+         //          chat.last_message = new Date()
 
-                  return {...chat}
+         //          return {...chat}
+         //       }else{
+         //          return chat
+         //       }
+         //    })
+         // }))
+         set((state) => {
+            const newArr = [...state.ChatConversationList]
+            const index = newArr.findIndex((chat) => {
+               if(chat.users[0] === msg.sender || chat.users[1] === msg.sender){
+                  return true
                }else{
-                  return chat
+                  return false
                }
             })
-         }))
+
+            if(index !== -1){
+               newArr[index].unread_count += 1
+               newArr[index].last_message = new Date()
+               
+            }else{
+               newArr.push({
+                  users: [msg.sender, msg.receiver],
+                  unread_count: 1,
+                  last_message: new Date()
+               })
+            }
+
+            return {
+               ChatConversationList: newArr
+            }
+         })
       }else if(msg.groupName === useChatReceiverStore.getState().chatReceiver){
          set((state) => ({ chatMsgs: [...state.chatMsgs, msg] }))
          // update conversation in db as read by username

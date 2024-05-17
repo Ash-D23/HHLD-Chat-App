@@ -135,14 +135,16 @@ const io = new Server(server, {
           recieverSocket.emit('group msg', {
             text: msg.text,
             sender: msg.sender,
-            groupName: msg.groupName
+            groupName: msg.groupName,
+            createdAt: msg.createdAt
           })
         }else{
           //Pub Sub group_recieverName_groupName
           publish(`group_${receiver}_${msg.groupName}`, JSON.stringify({
             text: msg.text,
             sender: msg.sender,
-            groupName: msg.groupName
+            groupName: msg.groupName,
+            createdAt: msg.createdAt
           }))
         }
       }
