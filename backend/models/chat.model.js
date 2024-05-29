@@ -15,6 +15,18 @@ const msgSchema = mongoose.Schema({
    }
 });
 
+const userReadsSchema = mongoose.Schema({
+    username: {
+        type: String
+    },
+    last_read: {
+        type: Date
+    },
+    unread_count: {
+        type: Number
+    }
+})
+
 const conversationSchema = mongoose.Schema({
    users: [{
        type: String,
@@ -22,9 +34,19 @@ const conversationSchema = mongoose.Schema({
    }],
    msgs: [msgSchema],
    groupName: {
-    type: String
+        type: String
+   },
+   last_message: {
+        type: Date,
+        default: Date.now
+    },
+   last_checked: [userReadsSchema],
+   isGroup: {
+        type: Boolean
    }
 });
+
+export const userReads = mongoose.model('userReads', userReadsSchema)
 
 const conversation = mongoose.model('Conversation', conversationSchema);
 

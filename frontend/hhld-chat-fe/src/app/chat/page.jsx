@@ -24,7 +24,7 @@ const Chat = () => {
     const { authName } = useAuthStore();
     const { updateUsers, UpdateUserStatus } = useUsersStore();
     const { chatReceiver } = useChatReceiverStore();
-    const { chatMsgs, updateChatMsg, updateChatMsgswithReciever } = useChatMsgsStore();
+    const { chatMsgs, updateChatMsg, updateChatMsgswithReciever, addNewGroupConversation, updateChatConversationOnSend, updateGroupConversationOnSend} = useChatMsgsStore();
     const { chatSelection } = useChatSelection();
     const {groups, addGroups, updateGroups} = useGroups()
     const [isLoading, setIsLoading] = useState(true)
@@ -95,6 +95,7 @@ const Chat = () => {
 
             newSocket.on("add group", (group) => {
                 addGroups(group)
+                addNewGroupConversation(group)
                 toast.success(`${group.Owner} added you to ${group.groupName}`, {
                     position: "top-right",
                     autoClose: 2000,
@@ -131,6 +132,7 @@ const Chat = () => {
             if(socket) {
                 socket.emit('chat msg', msgToBeSent);
                 updateChatMsg(msgToBeSent)
+                updateChatConversationOnSend(msgToBeSent)
                 setMsg('');
             }
         }else{
@@ -146,6 +148,7 @@ const Chat = () => {
             if(socket) {
                 socket.emit('group msg', msgToBeSent);
                 updateChatMsg(msgToBeSent)
+                updateGroupConversationOnSend(msgToBeSent)
                 setMsg('');
             }
         }

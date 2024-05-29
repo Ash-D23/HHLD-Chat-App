@@ -13,7 +13,7 @@ export const dateDiff = (dateString, now) => {
     if( diffDays >= 1){
         return diffDays > 1 ? `${diffDays} days ago` : `${diffDays} day ago`
     }else if(diffHrs >= 1){
-        return diffHrs >= 1 ? `${diffHrs} hrs ago` : `${diffHrs} hr ago`
+        return diffHrs > 1 ? `${diffHrs} hrs ago` : `${diffHrs} hr ago`
     }else if(diffMins >= 1){
         return diffMins > 1 ? `${diffMins} mins ago` : `${diffMins} min ago`
     }else{

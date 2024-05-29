@@ -13,7 +13,7 @@ const app = express();
 
 app.use(cors({
     credentials: true,
-    origin: [`${process.env.BE_HOST}:3000`, `${process.env.BE_HOST}:3001`, `${process.env.BE_HOST}:8080`, `${process.env.BE_HOST}:8082` ]
+    origin: [`${process.env.BE_HOST}:3000`, `${process.env.BE_HOST}:3001`, `${process.env.BE_HOST}:3002`, `${process.env.BE_HOST}:8080`, `${process.env.BE_HOST}:8082` ]
 }));
    
 app.use(cookieParser());

@@ -44,7 +44,8 @@ const ChatUsers = () => {
     const getGroupMsgs = async (chatReceiver) => {
         const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/msgs/group`,
         {
-            "groupName": chatReceiver
+            "groupName": chatReceiver,
+            "sender": authName
         })
 
         if (res.data.length !== 0) {
