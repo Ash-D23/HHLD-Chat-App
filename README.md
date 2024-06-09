@@ -5,7 +5,7 @@
 ### Tech Stack Used
 
 ```
-Next JS, Node JS, MongoDB, Redis, AWS, Docker,
+Next JS, Node JS, Socket IO, MongoDB, Redis, AWS, Docker
 ```
 
 ## Architecture
