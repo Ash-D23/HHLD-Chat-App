@@ -41,10 +41,11 @@ const Auth = () => {
             
         } catch (error) {
             console.log("Error in signup function : ", error.message);
+            setIsLoading(false)
         }finally{
             setUsername('')
             setPassword('')
-            setIsLoading(false)
+
         }
     }
 
@@ -64,10 +65,11 @@ const Auth = () => {
 
         } catch (error) {
             console.log("Error in Login function : ", error.message);
+            setIsLoading(false)
         }finally{
             setUsername('')
             setPassword('')
-            setIsLoading(false)
+
         }
     }
 
@@ -87,10 +89,11 @@ const Auth = () => {
 
         } catch (error) {
             console.log("Error in Login function : ", error.message);
+            setIsLoading(false)
         }finally{
             setUsername('')
             setPassword('')
-            setIsLoading(false)
+            
         }
     }
 
