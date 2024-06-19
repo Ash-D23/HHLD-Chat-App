@@ -23,7 +23,7 @@ const Auth = () => {
         event.preventDefault();
         setIsLoading(true)
         try {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:5000/auth/signup`, {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_AUTH_HOST}/auth/signup`, {
                 username: username,
                 password: password
             },
@@ -53,7 +53,7 @@ const Auth = () => {
         event.preventDefault();
         setIsLoading(true)
         try {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:5000/auth/login`, {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_AUTH_HOST}/auth/login`, {
                 username: username,
                 password: password
             },
@@ -77,7 +77,7 @@ const Auth = () => {
         event.preventDefault();
         setIsLoading(true)
         try {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:5000/auth/login`, {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_AUTH_HOST}/auth/login`, {
                 username: "test",
                 password: "test1234"
             },

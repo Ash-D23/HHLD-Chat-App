@@ -37,7 +37,7 @@ const Chat = () => {
       }
 
     const getUserData = async () => {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BE_HOST}:5000/users`,
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_AUTH_HOST}/users`,
         {
             withCredentials: true
         })
