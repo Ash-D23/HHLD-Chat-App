@@ -23,7 +23,7 @@ const ChatUsers = () => {
 
   useEffect(() => {
     const getMsgs = async (authName, chatReceiver) => {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/msgs`,
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BE_HOST}/msgs`,
             {
                 params: {
                     'sender': authName,
@@ -42,7 +42,7 @@ const ChatUsers = () => {
     }
 
     const getGroupMsgs = async (chatReceiver) => {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/msgs/group`,
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}/msgs/group`,
         {
             "groupName": chatReceiver,
             "sender": authName

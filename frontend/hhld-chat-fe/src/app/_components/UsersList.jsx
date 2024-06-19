@@ -10,7 +10,7 @@ const UsersList = ({ users, chatReceiver, setChatReceiver }) => {
     const { authName } = useAuthStore()
 
     const getConversationList = async () => {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/msgs/getConversationList`,
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}/msgs/getConversationList`,
             {
                 username: authName
             });

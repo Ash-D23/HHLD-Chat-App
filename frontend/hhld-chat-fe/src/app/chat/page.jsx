@@ -46,7 +46,7 @@ const Chat = () => {
     }
 
     const getUserGroups = async () => {
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/groups`,
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}/groups`,
         {
             username: authName
         })
@@ -73,7 +73,7 @@ const Chat = () => {
     useEffect(() => {
         // Establish WebSocket connection
         if(authName){
-            const newSocket = io(`${process.env.NEXT_PUBLIC_BE_HOST}:8080`, {
+            const newSocket = io(`${process.env.NEXT_PUBLIC_BE_HOST}`, {
                 query: {
                     username: authName
                 }

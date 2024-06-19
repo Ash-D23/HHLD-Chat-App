@@ -4,7 +4,7 @@ import { useAuthStore } from './useAuthStore';
 import axios from 'axios';
 
 const updateChatRecievedToDB = async (msg, username) => {
-   const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/msgs/updateChatConversation`,
+   const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}/msgs/updateChatConversation`,
         {
             users: [msg.sender, msg.receiver],
             username: username
@@ -12,7 +12,7 @@ const updateChatRecievedToDB = async (msg, username) => {
 }
 
 const updateGroupRecievedToDB = async (msg, username) => {
-   const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/msgs/updateGroupConversation`,
+   const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}/msgs/updateGroupConversation`,
         {
             groupName: msg.groupName,
             username: username

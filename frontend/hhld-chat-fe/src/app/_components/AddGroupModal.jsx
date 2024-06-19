@@ -49,7 +49,7 @@ const AddGroupModal = ({ closeModal, sendAddGroupNotification }) => {
 
         try{
             const members = [...selectedUsers, authName]
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}:8080/groups/add`, {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_BE_HOST}/groups/add`, {
                 groupName: groupName,
                 Owner: authName,
                 members: members
